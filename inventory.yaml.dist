@@ -1,0 +1,28 @@
+ungrouped:
+  hosts:
+    homelab:
+      ansible_host: 192.168.14.1
+      ansible_username: oxodao
+
+      ssh_port: 5792
+      ntp_timezone: Europe/Paris
+
+      # The hostname will be domain.tld
+      domain: home
+      tld: lan
+
+      machines:
+        - { hostname: 'severus', short_name: 'severus', ip: '192.168.14.10', description: 'Main desktop computer' }
+        - { hostname: 'lockhart', short_name: 'lockhart', ip: '192.168.14.11', description: 'Main laptop (Huawei)' }
+        - { hostname: 'tablet', short_name: 'tablet', ip: '192.168.14.12', description: 'Main tablet' }
+        - { hostname: 'op6', short_name: 'op6', ip: '192.168.1.13', description: 'Main phone' } ### RIP ONEPLUS 6, you will be missed ###
+        - { hostname: 'switch', short_name: 'switch', ip: '192.168.14.14', description: 'Main Nintendo Switch' }
+        - { hostname: 'nas', short_name: 'nas', ip: '192.168.14.100', description: 'Old Synology NAS' }
+
+      # @TODO: Use ansible to call Opennic's API
+      # https://wiki.opennic.org/api/geoip
+      forwarded_dns_servers:
+        - 2a00:f826:8:2::195
+        - 2a03:4000:4d:c92:88c0:96ff:fec6:b9d
+        - 195.10.195.195
+        - 194.36.144.87

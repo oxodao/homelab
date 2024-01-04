@@ -1,0 +1,9 @@
+collections:
+  - community.docker
+  - community.crypto
+
+roles:
+  - geerlingguy.ntp
+  - geerlingguy.docker
+  - geerlingguy.postgresql
+  - jnv.unattended-upgrades
