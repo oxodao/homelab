@@ -4,7 +4,7 @@
   tags: [ dnsmasq ]
 
   vars:
-    homelab: { hostname: "{{ hostname }}", short_name: "{{domain}}", ip: "{{base_ip}}", description: "Home lab" }
+    homelab: { hostname: "{{ hostname }}", short_name: "{{domain}}", ip: "{{base_ip.split('.')[-1]}}", description: "Home lab" }
     current_machines: "{{ machines + [ homelab ] }}"
 
   tasks:

@@ -1,1 +1,3 @@
 inventory.yaml
+files/*.key
+files/*.crt

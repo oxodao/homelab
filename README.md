@@ -43,6 +43,8 @@ $ su -c "apt update && apt install sudo && /usr/sbin/usermod -aG sudo USERNAME"
 
 Clone the repository on your computer, copy the `inventory.yaml.dist` to `inventory.yaml` and fill it accordingly.
 
+You need to have a wildcard certificate for your hostname (home.lan in my case), please put it in the `files` folder so that you have `files/home.lan.crt` and `files/home.lan.key`. If you don't have one, see `docs/be-your-own-ca.md` to generate a CA and then a wildcard certificate. The CA private key should be stored in a secure location as it will be trusted on all of your machine. If it get stolen HTTPS BECOME USELESS ON YOUR MACHINES FOR ALL WEBSITES (You probably don't check the issuer of every cert of every website you visit) so be extra careful (REALLY IMPORTANT!).
+
 
 ### Setup
 
@@ -61,7 +63,7 @@ Now that everything is ready you can use the services with the following URLs, b
 - https://git.home.lan => Gitea
 
 ## License
-Copyright © 2023 Oxodao
-This work is free. You can redistribute it and/or modify it under the
-terms of the Do What The Fuck You Want To Public License, Version 2,
-as published by Sam Hocevar. See the COPYING file for more details.
+> Copyright © 2023 Oxodao
+> This work is free. You can redistribute it and/or modify it under the
+> terms of the Do What The Fuck You Want To Public License, Version 2,
+> as published by Sam Hocevar. See the COPYING file for more details.

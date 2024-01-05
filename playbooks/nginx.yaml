@@ -1,0 +1,71 @@
+---
+# @TODO: Disable sites that are no longer used (remove all, then recreate them each time)
+- hosts: all
+  become: yes
+  tags: [ nginx ]
+
+  tasks:
+    - name: Installing nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Creating the required folders
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - /etc/nginx/snippets
+        - /etc/nginx/sites-enabled
+        - /opt/ssl
+
+    - name: Adding the SSL snippet
+      copy:
+        src: '../files/ssl.conf'
+        dest: /etc/nginx/snippets/ssl.conf
+
+    - name: Generating dhparam
+      openssl_dhparam:
+        path: /opt/ssl/dhparam.pem
+        size: 2048
+
+    - name: Copy SSL certs
+      copy:
+        src: "../files/{{ hostname }}.{{ item }}"
+        dest: "/opt/ssl/{{ hostname }}.{{ item }}"
+        mode: '0600'
+      with_items:
+        - crt
+        - key
+
+    - name: Updating nginx conf
+      copy:
+        content: |-
+          worker_processes  1;
+
+          events {
+              worker_connections  1024;
+          }
+
+
+          http {
+              include       mime.types;
+              default_type  application/octet-stream;
+              sendfile        on;
+              keepalive_timeout  65;
+
+              include sites-enabled/*;
+          }
+        dest: /etc/nginx/nginx.conf
+
+    - name: Creating nginx config for each app
+      template:
+        src: '../templates/nginx_app.conf.j2'
+        dest: "/etc/nginx/sites-enabled/{{ item.app_name }}.conf"
+      with_items: "{{ nginx_apps }}"
+
+    - name: "Enabling & starting nginx"
+      service:
+        name: nginx
+        enabled: yes
+        state: restarted

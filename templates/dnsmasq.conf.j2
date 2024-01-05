@@ -12,5 +12,5 @@ local=/{{ tld }}/
 domain={{ hostname }}
 
 {% for m in current_machines %}
-address=/{{m.short_name}}.{{tld}}/{{m.ip}}  # {{m.description}}
+address=/{{m.short_name}}.{{tld}}/{{ip_prefix}}{{m.ip}}  # {{m.description}}
 {% endfor %}

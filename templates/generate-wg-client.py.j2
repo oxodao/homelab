@@ -1,0 +1,41 @@
+#!/usr/bin/python3
+
+import argparse
+import subprocess
+
+ENDPOINT = "{{public_ip}}:{{wireguard.port}}"
+ALLOWED_IPS = "{{wg_ip_prefix}}0/24,{{ip_prefix}}0/24"
+SERVER_PUBLIC_KEY = "{{wireguard.public_key}}"
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('ipendpoint')
+args = parser.parse_args()
+
+template = """
+[Interface]
+Address = {{wg_ip_prefix}}{ip}/32
+PrivateKey = {private_key}
+DNS = {{wg_ip_prefix}}1
+
+[Peer]
+PublicKey = {server_public_key}
+AllowedIPs = {allowed_ips}
+Endpoint = {endpoint}
+PersistentKeepalive = 25
+"""
+
+privkey = subprocess.check_output("wg genkey", shell=True).decode("utf-8").strip()
+pubkey = subprocess.check_output(f"echo '{privkey}' | wg pubkey", shell=True).decode("utf-8").strip()
+
+
+print('Please add the public key to the ansible variables and deploy it again: ', pubkey)
+print()
+print('Generated client config file:')
+print(template.format(**{
+    'ip': args.ipendpoint,
+    'private_key': privkey,
+    'server_public_key': SERVER_PUBLIC_KEY,
+    'allowed_ips': ALLOWED_IPS,
+    'endpoint': ENDPOINT,
+}))

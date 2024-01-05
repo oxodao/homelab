@@ -1,0 +1,17 @@
+---
+- hosts: all
+  tags: [ docker ]
+  become: yes
+
+  tasks:
+    - import_role: { name: 'geerlingguy.docker' }
+      vars:
+        docker_edition: 'ce'
+        docker_users:
+          - "{{ ansible_username }}"
+
+    - name: Enable docker
+      service:
+        name: docker
+        enabled: yes
+        state: started

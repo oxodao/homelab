@@ -1,0 +1,27 @@
+---
+- hosts: all
+  become: yes
+  tags: [ wireguard ]
+
+  tasks:
+    - name: Setup wireguard tools
+      apt:
+        name: wireguard-tools
+        state: present
+
+    - name: Adding Config
+      template:
+        src: '../templates/wg0.conf.j2'
+        dest: /etc/wireguard/wg0.conf
+
+    - name: Enabling the service
+      service:
+        name: wg-quick@wg0.service
+        enabled: yes
+        state: restarted
+
+    - name: Creating the command to generate client Config
+      template:
+        src: '../templates/generate-wg-client.py.j2'
+        dest: /usr/bin/generate-wg-client
+        mode: 0777

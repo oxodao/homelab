@@ -1,0 +1,46 @@
+---
+- hosts: all
+  become: yes
+  tags: [ init ]
+
+  tasks:
+    - import_role: { name: 'geerlingguy.ntp' }
+    - import_role: { name: 'jnv.debian-backports' }
+    - import_role: { name: 'jnv.unattended-upgrades' }
+
+    - name: Setting the hostname
+      hostname:
+        name: "{{ hostname }}"
+
+    - name: Replace the hosts file
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '^127\.0\.0\.1[ \t]+localhost'
+        line: '127.0.0.1 localhost {{ hostname }}'
+        state: present
+
+    - name: Ensure locale exists
+      locale_gen:
+        name: fr_FR.UTF-8
+        state: present
+
+    - name: Installing some softwares
+      apt:
+        name: [ zip, unzip, fuse, zsh, rsync, restic, sqlite3, iptables ]
+
+    - name: Installing ZFS
+      apt:
+        name: zfsutils-linux
+        state: present
+        default_release: "{{ansible_distribution_release}}-backports"
+
+    - name: Adding vim config
+      get_url:
+        url: https://raw.githubusercontent.com/oxodao/vimergency/master/vimrc
+        dest: /etc/vimrc
+        mode: 0644
+
+    - name: Enabling fuse
+      modprobe:
+        name: fuse
+        state: present
