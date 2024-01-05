@@ -30,7 +30,7 @@
 
     - name: Installing ZFS
       apt:
-        name: zfsutils-linux
+        name: [ zfsutils-linux, cockpit, curl ]
         state: present
         default_release: "{{ansible_distribution_release}}-backports"
 

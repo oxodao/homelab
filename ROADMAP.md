@@ -11,3 +11,8 @@
 [ ] Setup app monitoring (Maybe? Really useful?)
 [ ] Setup restic backups (Better setup than what I have currently)
 [ ] Make a "Disaster recovery" guide in the readme AND TEST IT !!
+
+@TODO:
+Setup cockpit so that it is only accessible through cockpit.home.lan
+Setup 45Drives/cockpit-file-sharing + 45Drives/cockpit-identities
+Debug smb => Pas les permissions pour mettre des trucs dans le share depuis un windows
