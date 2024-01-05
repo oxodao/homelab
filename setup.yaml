@@ -3,4 +3,5 @@
 - import_playbook: playbooks/dnsmasq.yaml
 - import_playbook: playbooks/docker.yaml
 - import_playbook: playbooks/wireguard.yaml
+- import_playbook: playbooks/cockpit.yaml
 - import_playbook: playbooks/nginx.yaml

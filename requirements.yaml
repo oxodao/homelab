@@ -1,6 +1,7 @@
 collections:
-  - community.docker
   - community.crypto
+  - name: community.docker
+    version: 3.6.0-b1 # Required for docker-compose v2
 
 roles:
   - geerlingguy.ntp

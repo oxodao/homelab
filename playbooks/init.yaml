@@ -26,11 +26,11 @@
 
     - name: Installing some softwares
       apt:
-        name: [ zip, unzip, fuse, zsh, rsync, restic, sqlite3, iptables ]
+        name: [ zip, unzip, fuse, zsh, rsync, sqlite3, iptables, vim ]
 
     - name: Installing ZFS
       apt:
-        name: [ zfsutils-linux, cockpit, curl ]
+        name: [ zfsutils-linux, curl ]
         state: present
         default_release: "{{ansible_distribution_release}}-backports"
 
@@ -44,3 +44,38 @@
       modprobe:
         name: fuse
         state: present
+
+    - name: Add dc shortcut
+      become: yes
+      lineinfile:
+        path: "/root/.bashrc"
+        line: 'alias dc="docker-compose"'
+        create: yes
+      when: ansible_env.HOME is defined
+
+    # for my brain rot
+    # no need for the full neovim so i'll stick with vim
+    - name: Add nvim shortcut
+      become: yes
+      lineinfile:
+        path: "/root/.bashrc"
+        line: 'alias nvim="vim"'
+        create: yes
+      when: ansible_env.HOME is defined
+
+    - name: Add dc shortcut
+      become: no
+      lineinfile:
+        path: "/home/{{ ansible_username }}/.bashrc"
+        line: 'alias dc="docker-compose"'
+        create: yes
+      when: ansible_env.HOME is defined
+
+    # for my brain rot
+    # no need for the full neovim so i'll stick with vim
+    - name: Add nvim shortcut
+      become: no
+      lineinfile:
+        path: "/home/{{ ansible_username }}/.bashrc"
+        line: 'alias nvim="vim"'
+        create: yes

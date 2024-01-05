@@ -1,0 +1,28 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    restart: "unless-stopped"
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: 'Europe/Paris'
+      JELLYFIN_CACHE_DIR: '/cache'
+      JELLYFIN_CONFIG_DIR: '/config'
+      JELLYFIN_DATA_DIR: '/data'
+      JELLYFIN_LOG_DIR: '/logs'
+      JELLYFIN_PublishedServerUrl: 'https://play.{{hostname}}'
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - ./data:/data
+      - ./logs:/logs
+      - ./metadata:/metadata
+      - ./transcodes:/transcodes
+      - /mnt/shares:/media
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri/card0:/dev/dri/card0
+    ports:
+      - "127.0.0.1:8096:8096"
+      - 7359:7359/udp
+      - 1900:1900/udp

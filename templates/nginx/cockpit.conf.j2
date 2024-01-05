@@ -20,7 +20,7 @@ server {
     client_max_body_size 100M;
 
     location / {
-        proxy_pass http://localhost:{{ item.port }};
+        proxy_pass https://localhost:{{ item.port }};
         proxy_http_version 1.1;
         proxy_pass_request_headers      on;
 
@@ -30,5 +30,10 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header Connection "Upgrade";
         proxy_set_header Upgrade $http_upgrade;
+
+        proxy_buffering off;
+        # Pass ETag header from Cockpit to clients.
+        # See: https://github.com/cockpit-project/cockpit/issues/5239
+        gzip off;
     }
 }

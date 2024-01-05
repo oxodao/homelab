@@ -58,11 +58,19 @@
           }
         dest: /etc/nginx/nginx.conf
 
-    - name: Creating nginx config for each app
+    - name: Creating nginx config for each app (Generic)
       template:
         src: '../templates/nginx_app.conf.j2'
         dest: "/etc/nginx/sites-enabled/{{ item.app_name }}.conf"
       with_items: "{{ nginx_apps }}"
+      when: item.custom_conf is not defined or not item.custom_conf
+
+    - name: Creating nginx config for each app (Custom)
+      template:
+        src: '../templates/nginx/{{ item.app_name }}.conf.j2'
+        dest: "/etc/nginx/sites-enabled/{{ item.app_name }}.conf"
+      with_items: "{{ nginx_apps }}"
+      when: item.custom_conf is defined and item.custom_conf
 
     - name: "Enabling & starting nginx"
       service:

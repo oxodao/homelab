@@ -4,7 +4,7 @@
 [x] Install docker
 [ ] Setup docker composes
 [x] Setup nginx
-[ ] Setup SMB server
+[x] Setup SMB server # More or less, still have to debug permissions and autosetup the default shares
 [x] Setup wireguard server
 [ ] Setup internal email server (mailgun, to send monitoring emails)
 [ ] Setup hard drive monitoring
@@ -13,6 +13,5 @@
 [ ] Make a "Disaster recovery" guide in the readme AND TEST IT !!
 
 @TODO:
-Setup cockpit so that it is only accessible through cockpit.home.lan
-Setup 45Drives/cockpit-file-sharing + 45Drives/cockpit-identities
-Debug smb => Pas les permissions pour mettre des trucs dans le share depuis un windows
+Debug smb => Pas les permissions pour mettre des trucs dans le share depuis un windows => Pas les permissions sur le dossier monté, chmod 755 ?
+Setup iptables with simple rules in ansible yaml

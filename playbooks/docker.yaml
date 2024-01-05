@@ -15,3 +15,47 @@
         name: docker
         enabled: yes
         state: started
+
+    - name: Create docker apps driver
+      file:
+        path: /opt/docker-apps
+        state: directory
+        mode: '0755'
+        owner: "{{ansible_username}}"
+        group: "{{ansible_username}}"
+        recurse: yes
+
+    - name: "Create {{item}} dir"
+      become: no
+      file:
+        path: "/opt/docker-apps/{{item.name}}"
+        state: directory
+        mode: '0700'
+      loop: "{{ docker_apps }}"
+
+    - name: "Create folders for Docker apps"
+      become: no
+      file:
+        path: "/opt/docker-apps/{{ docker_app.0.name }}/{{ docker_app.1 }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ansible_username}}"
+        group: "{{ansible_username}}"
+      with_subelements:
+        - "{{ docker_apps }}"
+        - folders_to_create
+      loop_control:
+        loop_var: docker_app
+
+    - name: "Creating {{item}} docker-compose"
+      become: no
+      template:
+        src: "../templates/docker/{{item.name}}.yaml.j2"
+        dest: "/opt/docker-apps/{{item.name}}/docker-compose.yaml"
+      loop: "{{ docker_apps }}"
+
+    - name: "Starting {{item}}"
+      become: no
+      community.docker.docker_compose_v2:
+        project_src: "/opt/docker-apps/{{item.name}}"
+      loop: "{{ docker_apps }}"

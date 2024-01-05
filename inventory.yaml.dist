@@ -1,8 +1,15 @@
 ungrouped:
   hosts:
     homelab:
-      ansible_host: 192.168.14.2
+      ansible_host: 192.168.14.1
       ansible_username: oxodao
+
+      # This is the username which has the public key you want to
+      # be authorized on the server
+      # It will set the authorized_keys to the content of
+      # https://github.com/{{github_username}}.keys
+      # before disabling password authentication
+      github_username: oxodao
 
       ssh_port: 5792
       ntp_timezone: Europe/Paris
@@ -44,6 +51,10 @@ ungrouped:
         - 2a03:4000:4d:c92:88c0:96ff:fec6:b9d
         - 195.10.195.195
         - 194.36.144.87
+
+      docker_apps:
+        - jellyfin
+        - gitea
 
       nginx_apps:
         - app_name: paperless

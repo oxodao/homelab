@@ -52,6 +52,20 @@
         line: "Port {{ ssh_port }}"
       when: not is_custom_port_setup
 
+    - name: Disabling password authentication
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regex: ^(# *)?PasswordAuthentication
+        line: PasswordAuthentication no
+      when: not is_custom_port_setup
+
+    - name: Set authorized keys taken from url
+      ansible.posix.authorized_key:
+        user: "{{ansible_username}}"
+        state: present
+        key: "https://github.com/{{github_username}}.keys"
+      when: not is_custom_port_setup
+
     - name: Restart the SSH server
       become: yes
       service:

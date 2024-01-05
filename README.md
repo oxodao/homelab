@@ -62,6 +62,24 @@ Now that everything is ready you can use the services with the following URLs, b
 - https://paper.home.lan => Paperless
 - https://git.home.lan => Gitea
 
+### Additional setup
+
+#### Jellyfin
+
+You need to do the initial setup of Jellyfin.
+
+The media mount from the NAS (shares ZFS dataset) should contain your media. Create collections as you wish.
+
+You also need to enable hardware acceleration, VA-API on the standard render node. For the `i3-10100` you can use the default decoders + `HEVC`, `VP8`, `MPEG2` and `VP9` (Don't trust google on this one, this list was obtained by `vainfo`. The quora answer is a liar).
+
+You also need to setup the metadata folder and the transcodes folder to be `/metadata` and `/transcodes`. This is important as the data folder is backed up and you don't want those to be included in the backup process.
+
+#### Gitea
+
+Do the setup as you would do on a standard Gitea install. The only thing you have to change is the SSH port that should be `22` instead of `2222`.
+
+Don't forget to create your admin account during the setup!
+
 ## License
 > Copyright © 2023 Oxodao
 > This work is free. You can redistribute it and/or modify it under the
