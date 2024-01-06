@@ -91,6 +91,14 @@ It should work out of the box. You might want to setup your MyJdownloader accoun
 
 Keep in mind that the built-in UI is running under VNC server so you need to paste your clipboard in the box on the left so that it's forwarded to the app.
 
+#### Paperless
+
+You only have to setup your admin user, login to the homelab then:
+```
+$ cd /opt/docker-apps/paperless
+$ dc exec app python3 manage.py createsuperuser
+```
+
 ## License
 > Copyright © 2023 Oxodao
 > This work is free. You can redistribute it and/or modify it under the

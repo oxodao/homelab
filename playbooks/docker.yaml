@@ -1,37 +1,26 @@
 ---
-- hosts: all
-  tags: [ docker ]
+- hosts: "all"
+  tags: [ "docker" ]
   become: yes
 
   tasks:
-    - import_role: { name: 'geerlingguy.docker' }
+    - import_role: { name: "geerlingguy.docker" }
       vars:
-        docker_edition: 'ce'
+        docker_edition: "ce"
         docker_users:
           - "{{ ansible_username }}"
 
-    - name: Enable docker
+    - name: "Enable docker"
       service:
-        name: docker
+        name: "docker"
+        state: "started"
         enabled: yes
-        state: started
 
-    - name: Create docker apps driver
+    - name: "Create docker apps driver"
       file:
-        path: /opt/docker-apps
-        state: directory
-        mode: '0755'
-        owner: "{{ansible_username}}"
-        group: "{{ansible_username}}"
-        recurse: yes
-
-    # This one is done separately because this is the only case where its needed
-    # If it gets used on multiple container I'll automate it properly
-    - name: Create JDownloader's download folder
-      file:
-        path: /mnt/sauvegarde/Downloads
-        state: directory
-        mode: '0755'
+        path: "/opt/docker-apps"
+        state: "directory"
+        mode: "0755"
         owner: "{{ansible_username}}"
         group: "{{ansible_username}}"
         recurse: yes
@@ -40,23 +29,23 @@
       become: no
       file:
         path: "/opt/docker-apps/{{item.name}}"
-        state: directory
-        mode: '0700'
+        state: "directory"
+        mode: "0700"
       loop: "{{ docker_apps }}"
 
     - name: "Create folders for Docker apps"
       become: no
       file:
-        path: "/opt/docker-apps/{{ docker_app.0.name }}/{{ docker_app.1 }}"
-        state: directory
-        mode: '0755'
+        path: "{{ docker_app.1 }}"
+        state: "directory"
+        mode: "0755"
         owner: "{{ansible_username}}"
         group: "{{ansible_username}}"
       with_subelements:
         - "{{ docker_apps }}"
-        - folders_to_create
+        - "folders_to_create"
       loop_control:
-        loop_var: docker_app
+        loop_var: "docker_app"
 
     - name: "Creating {{item}} docker-compose"
       become: no

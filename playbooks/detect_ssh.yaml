@@ -3,48 +3,48 @@
 # I just reversed it as the port 22 will still be used by Gitea's SSH server so the way its setup would not work for me
 # THIS FILE WILL CHANGE MY LIFE FOR THE BETTER
 
-- hosts: all
-  tags: [always]
+- hosts: "all"
+  tags: ["always"]
   gather_facts: no
 
   tasks:
-    - name: Check if the custom port works
+    - name: "Check if the custom port works"
       wait_for:
         host: "{{ ansible_host }}"
         port: "{{ ssh_port }}"
         state: "started"
         connect_timeout: 5
         timeout: 10
-      delegate_to: localhost
+      delegate_to: "localhost"
       ignore_errors: yes
       register: is_custom_port
 
     - set_fact:
-        is_custom_port_setup: '{{ is_custom_port is defined and is_custom_port.state is defined and is_custom_port.state == "started" }}'
+        is_custom_port_setup: "{{ is_custom_port is defined and is_custom_port.state is defined and is_custom_port.state == 'started' }}"
 
-    - name: Set inventory ansible_port to 22 if not ok
+    - name: "Set inventory ansible_port to 22 if not ok"
       set_fact:
         ansible_port: "22"
       when: not is_custom_port_setup
 
-    - name: Check if the server is accessible on the fallback port
+    - name: "Check if the server is accessible on the fallback port"
       wait_for:
         host: "{{ ansible_host }}"
         port: "22"
-        state: started
+        state: "started"
         connect_timeout: 5
         timeout: 10
-      delegate_to: localhost
+      delegate_to: "localhost"
       ignore_errors: yes
       register: fallback_default_port
       when: not is_custom_port_setup
 
-    - name: Fail if can't connect at all
+    - name: "Fail if can't connect at all"
       fail:
         msg: "The SSH port is neither 22 or {{ ssh_port }}"
       when: fallback_default_port is undefined
 
-    - name: Changing the SSH port on the server
+    - name: "Changing the SSH port on the server"
       become: yes
       lineinfile:
         dest: "/etc/ssh/sshd_config"
@@ -52,30 +52,27 @@
         line: "Port {{ ssh_port }}"
       when: not is_custom_port_setup
 
-    - name: Disabling password authentication
+    - name: "Disabling password authentication"
       lineinfile:
-        path: /etc/ssh/sshd_config
-        regex: ^(# *)?PasswordAuthentication
-        line: PasswordAuthentication no
+        path: "/etc/ssh/sshd_config"
+        regex: "^(# *)?PasswordAuthentication"
+        line: "PasswordAuthentication no"
       when: not is_custom_port_setup
 
-    - name: Set authorized keys taken from url
+    - name: "Set authorized keys taken from url"
       ansible.posix.authorized_key:
         user: "{{ansible_username}}"
-        state: present
+        state: "present"
         key: "https://github.com/{{github_username}}.keys"
       when: not is_custom_port_setup
 
-    - name: Restart the SSH server
+    - name: "Restart the SSH server"
       become: yes
       service:
-        name: ssh
-        state: restarted
+        name: "ssh"
+        state: "restarted"
       when: not is_custom_port_setup
 
-    - name: Set back the SSH port to the correct one
+    - name: "Set back the SSH port to the correct one"
       set_fact:
         ansible_port: "{{ ssh_port }}"
-
-    - name: Gathering facts
-      setup:

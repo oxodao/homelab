@@ -1,51 +1,51 @@
 ---
-- hosts: all
+- hosts: "all"
   become: yes
-  tags: [ init ]
+  tags: [ "init" ]
 
   tasks:
-    - import_role: { name: 'geerlingguy.ntp' }
-    - import_role: { name: 'jnv.debian-backports' }
-    - import_role: { name: 'jnv.unattended-upgrades' }
+    - import_role: { name: "geerlingguy.ntp" }
+    - import_role: { name: "jnv.debian-backports" }
+    - import_role: { name: "jnv.unattended-upgrades" }
 
-    - name: Setting the hostname
+    - name: "Setting the hostname"
       hostname:
         name: "{{ hostname }}"
 
-    - name: Replace the hosts file
+    - name: "Replace the hosts file"
       lineinfile:
-        dest: /etc/hosts
+        dest: "/etc/hosts"
         regexp: '^127\.0\.0\.1[ \t]+localhost'
-        line: '127.0.0.1 localhost {{ hostname }}'
-        state: present
+        line: "127.0.0.1 localhost {{ hostname }}"
+        state: "present"
 
-    - name: Ensure locale exists
+    - name: "Ensure locale exists"
       locale_gen:
-        name: fr_FR.UTF-8
-        state: present
+        name: "fr_FR.UTF-8"
+        state: "present"
 
-    - name: Installing some softwares
+    - name: "Installing some softwares"
       apt:
-        name: [ zip, unzip, fuse, zsh, rsync, sqlite3, iptables, vim ]
+        name: [ "zip", "unzip", "fuse", "zsh", "rsync", "sqlite3", "iptables", "vim" ]
 
-    - name: Installing ZFS
+    - name: "Installing ZFS"
       apt:
-        name: [ zfsutils-linux, curl ]
-        state: present
+        name: [ "zfsutils-linux", "curl" ]
         default_release: "{{ansible_distribution_release}}-backports"
+        state: "present"
 
-    - name: Adding vim config
+    - name: "Adding vim config"
       get_url:
-        url: https://raw.githubusercontent.com/oxodao/vimergency/master/vimrc
-        dest: /etc/vimrc
-        mode: 0644
+        url: "https://raw.githubusercontent.com/oxodao/vimergency/master/vimrc"
+        dest: "/etc/vimrc"
+        mode: "0644"
 
-    - name: Enabling fuse
+    - name: "Enabling fuse"
       modprobe:
-        name: fuse
-        state: present
+        name: "fuse"
+        state: "present"
 
-    - name: Add dc shortcut
+    - name: "Add dc shortcut"
       become: yes
       lineinfile:
         path: "/root/.bashrc"
@@ -54,14 +54,14 @@
 
     # for my brain rot
     # no need for the full neovim so i'll stick with vim
-    - name: Add nvim shortcut
+    - name: "Add nvim shortcut"
       become: yes
       lineinfile:
         path: "/root/.bashrc"
         line: 'alias nvim="vim"'
         create: yes
 
-    - name: Add dc shortcut
+    - name: "Add dc shortcut"
       become: no
       lineinfile:
         path: "/home/{{ ansible_username }}/.bashrc"
@@ -70,7 +70,7 @@
 
     # for my brain rot
     # no need for the full neovim so i'll stick with vim
-    - name: Add nvim shortcut
+    - name: "Add nvim shortcut"
       become: no
       lineinfile:
         path: "/home/{{ ansible_username }}/.bashrc"

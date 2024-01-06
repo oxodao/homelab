@@ -1,22 +1,22 @@
 ---
-- hosts: all
+- hosts: "all"
   become: yes
-  tags: [ cockpit ]
+  tags: [ "cockpit" ]
 
   tasks:
-    - name: Installing Cockpit
+    - name: "Installing Cockpit"
       apt:
-        name: [ cockpit, cockpit-file-sharing, cockpit-identities ]
-        state: present
+        name: [ "cockpit", "cockpit-file-sharing", "cockpit-identities" ]
+        state: "present"
         default_release: "{{ansible_distribution_release}}-backports"
 
-    - name: Config Cockpit
+    - name: "Config Cockpit"
       template:
-        src: ../templates/cockpit.conf.j2
-        dest: /etc/cockpit/cockpit.conf
+        src: "../templates/cockpit.conf.j2"
+        dest: "/etc/cockpit/cockpit.conf"
 
     - name: "Enable & start the cockpit service"
       service:
-        name: cockpit
+        name: "cockpit"
         enabled: yes
-        state: restarted
+        state: "restarted"

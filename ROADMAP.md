@@ -6,6 +6,7 @@
     [x] Gitea
     [x] Jellyfin
     [ ] Home Assistant
+    [x] Paperless
     [x] JDownloader
     [ ] Immich (?)
 [x] Setup nginx

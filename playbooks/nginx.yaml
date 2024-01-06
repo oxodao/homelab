@@ -1,44 +1,44 @@
 ---
 # @TODO: Disable sites that are no longer used (remove all, then recreate them each time)
-- hosts: all
+- hosts: "all"
   become: yes
-  tags: [ nginx ]
+  tags: [ "nginx" ]
 
   tasks:
-    - name: Installing nginx
+    - name: "Installing nginx"
       apt:
-        name: nginx
-        state: present
+        name: "nginx"
+        state: "present"
 
-    - name: Creating the required folders
+    - name: "Creating the required folders"
       file:
         path: "{{ item }}"
-        state: directory
+        state: "directory"
       with_items:
-        - /etc/nginx/snippets
-        - /etc/nginx/sites-enabled
-        - /opt/ssl
+        - "/etc/nginx/snippets"
+        - "/etc/nginx/sites-enabled"
+        - "/opt/ssl"
 
-    - name: Adding the SSL snippet
+    - name: "Adding the SSL snippet"
       copy:
-        src: '../files/ssl.conf'
-        dest: /etc/nginx/snippets/ssl.conf
+        src: "../files/ssl.conf"
+        dest: "/etc/nginx/snippets/ssl.conf"
 
-    - name: Generating dhparam
+    - name: "Generating dhparam"
       openssl_dhparam:
-        path: /opt/ssl/dhparam.pem
+        path: "/opt/ssl/dhparam.pem"
         size: 2048
 
-    - name: Copy SSL certs
+    - name: "Copy SSL certs"
       copy:
         src: "../files/{{ hostname }}.{{ item }}"
         dest: "/opt/ssl/{{ hostname }}.{{ item }}"
-        mode: '0600'
+        mode: "0600"
       with_items:
-        - crt
-        - key
+        - "crt"
+        - "key"
 
-    - name: Updating nginx conf
+    - name: "Updating nginx conf"
       copy:
         content: |-
           worker_processes  1;
@@ -56,24 +56,24 @@
 
               include sites-enabled/*;
           }
-        dest: /etc/nginx/nginx.conf
+        dest: "/etc/nginx/nginx.conf"
 
-    - name: Creating nginx config for each app (Generic)
+    - name: "Creating nginx config for each app (Generic)"
       template:
-        src: '../templates/nginx_app.conf.j2'
+        src: "../templates/nginx_app.conf.j2"
         dest: "/etc/nginx/sites-enabled/{{ item.app_name }}.conf"
       with_items: "{{ nginx_apps }}"
       when: item.custom_conf is not defined or not item.custom_conf
 
-    - name: Creating nginx config for each app (Custom)
+    - name: "Creating nginx config for each app (Custom)"
       template:
-        src: '../templates/nginx/{{ item.app_name }}.conf.j2'
+        src: "../templates/nginx/{{ item.app_name }}.conf.j2"
         dest: "/etc/nginx/sites-enabled/{{ item.app_name }}.conf"
       with_items: "{{ nginx_apps }}"
       when: item.custom_conf is defined and item.custom_conf
 
     - name: "Enabling & starting nginx"
       service:
-        name: nginx
+        name: "nginx"
+        state: "restarted"
         enabled: yes
-        state: restarted
