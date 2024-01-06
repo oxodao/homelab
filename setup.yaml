@@ -8,3 +8,4 @@
 - import_playbook: playbooks/samba.yaml
 - import_playbook: playbooks/zfs_monitor.yaml
 - import_playbook: playbooks/nginx.yaml
+- import_playbook: playbooks/backups.yaml

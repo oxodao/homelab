@@ -1,0 +1,35 @@
+---
+- hosts: "all"
+  become: yes
+  tags: [ "backups" ]
+
+  tasks:
+    - name: "Install restic"
+      apt:
+        name: [ "restic" ]
+
+    - name: "Add the backup script"
+      copy:
+        src: "../files/backup.py"
+        dest: "/usr/bin/backups"
+        mode: "0755"
+        owner: "root"
+        group: "root"
+      
+    - name: "Copy the config"
+      template:
+        src: "../templates/backups.json.j2"
+        dest: "/etc/backups.json"
+
+    - name: "Add the cronjob"
+      cron:
+        name: "Run the backup task once a week"
+        minute: "0"
+        hour: "0"
+        day: "*"
+        month: "*"
+        weekday: "1"
+        user: "root"
+        job: "backups"
+        cron_file: "ansible_cron_backups"
+        state: "present"

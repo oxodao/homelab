@@ -1,0 +1,44 @@
+{
+    "server": {
+        "endpoint": "s3:{{ backups.s3_url }}",
+        "access_key_id": "{{ backups.s3_access_key_id }}",
+        "access_key_secret": "{{ backups.s3_access_key_secret }}",
+        "restic_password": "{{ backups.restic_password }}"
+    },
+    "notification": {
+        "type": "discord",
+        "endpoint": "{{ backups.discord_webhook }}",
+        "username": "Backup bot"
+    },
+    "folders": [
+        {
+            "name": "Jellyfin",
+            "path": "/opt/docker-apps/jellyfin",
+            "exclude": [],
+            "is_docker_app": true
+        },
+        {
+            "name": "Scrutiny",
+            "path": "/opt/docker-apps/scrutiny",
+            "exclude": ["cache", "logs", "metadata", "transcode"],
+            "is_docker_app": true
+        },
+        {
+            "name": "Paperless",
+            "path": "/opt/docker-apps/paperless",
+            "exclude": [],
+            "is_docker_app": true
+        },
+        {
+            "name": "Documents",
+            "path": "/mnt/documents",
+            "exclude": []
+        },
+        {
+            "name": "Gitea",
+            "path": "/opt/docker-apps/gitea",
+            "exclude": ["data/tmp"],
+            "is_docker_app": true
+        }
+    ]
+}

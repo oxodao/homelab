@@ -15,7 +15,7 @@
 [x] Setup internal email server (mailgun, to send monitoring emails, via msmtp ou dma)
 [x] Setup hard drive monitoring
 [ ] Setup app monitoring (Maybe? Really useful?)
-[ ] Setup restic backups (Better setup than what I have currently)
+[x] Setup restic backups (Better setup than what I have currently)
 [ ] Make a "Disaster recovery" guide in the readme AND TEST IT !!
 [x] Auto-setup samba
 [ ] Setup firewall correctly - Nothing at all should be accessible except:

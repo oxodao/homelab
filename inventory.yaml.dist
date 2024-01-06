@@ -157,3 +157,10 @@ ungrouped:
           write_list: "oxodao"
           guest_ok: yes
           public: yes # Allow anonymous to read the files
+
+      backups:
+        s3_url: "https://s3.eu-central-003.backblazeb2.com/xxxxBUCKETxxxx"
+        s3_access_key_id: "aws access key"
+        s3_access_key_secret: "aws secret key"
+        restic_password: "your private restic password"
+        discord_webhook: "discord webhook url"

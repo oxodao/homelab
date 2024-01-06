@@ -69,6 +69,14 @@ Now that everything is ready you can use the services with the following URLs, b
 
 ### Additional setup
 
+#### Backups
+
+The most important, you need to initialize your restic repo the first time.
+
+```
+$ AWS_ACCESS_KEY_ID=xxxxxxxx AWS_SECRET_ACCESS_KEY=xxxxxxxxxx restic -r s3:https://s3.eu-central-003.backblazeb2.com/xxxxxBUCKETxxxxx init
+```
+
 #### Jellyfin
 
 You need to do the initial setup of Jellyfin.
