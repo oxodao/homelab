@@ -1,0 +1,13 @@
+account default
+
+host {{smtp_hostname}}
+port {{smtp_port}}
+
+tls {{'on' if smtp_tls else 'off'}}
+tls_starttls {{'on' if smtp_starttls else 'off'}}
+
+auth on
+user {{smtp_username}}
+password {{smtp_password}}
+
+from {{smtp_from}}

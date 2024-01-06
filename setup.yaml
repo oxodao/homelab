@@ -1,6 +1,7 @@
 - import_playbook: playbooks/detect_ssh.yaml
 - import_playbook: playbooks/init.yaml
 - import_playbook: playbooks/dnsmasq.yaml
+- import_playbook: playbooks/mail.yaml
 - import_playbook: playbooks/docker.yaml
 - import_playbook: playbooks/wireguard.yaml
 - import_playbook: playbooks/cockpit.yaml

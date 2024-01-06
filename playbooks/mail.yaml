@@ -1,0 +1,17 @@
+---
+- hosts: "all"
+  become: yes
+  tags: [ "mail" ]
+
+  tasks:
+    - name: "Installing msmtp"
+      apt:
+        name: [ "msmtp-mta", "s-nail" ]
+        state: "present"
+
+    - name: "Config msmtp"
+      template:
+        src: "../templates/msmtprc.j2"
+        dest: "/etc/msmtprc"
+        owner: "root"
+        mode: "0600"

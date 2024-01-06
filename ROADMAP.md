@@ -12,7 +12,7 @@
 [x] Setup nginx
 [x] Setup SMB server # More or less, still have to debug permissions and autosetup the default shares
 [x] Setup wireguard server
-[ ] Setup internal email server (mailgun, to send monitoring emails, via msmtp ou dma)
+[x] Setup internal email server (mailgun, to send monitoring emails, via msmtp ou dma)
 [ ] Setup hard drive monitoring
 [ ] Setup app monitoring (Maybe? Really useful?)
 [ ] Setup restic backups (Better setup than what I have currently)

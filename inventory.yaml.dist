@@ -18,6 +18,14 @@ ungrouped:
       domain: home
       tld: lan
 
+      smtp_hostname: 'smtp.mailgun.org'
+      smtp_port: 587
+      smtp_tls: yes
+      smtp_starttls: yes
+      smtp_username: ''
+      smtp_password: ''
+      smtp_from: ''
+
       public_ip: "HOMELAB PUBLIC IP (FOR WIREGUARD)"
       ip_prefix: "192.168.14."
       wg_ip_prefix: "192.168.66."
