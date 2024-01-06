@@ -11,7 +11,7 @@ It features:
 - Jellyfin (Media server)
 - Gitea (Git server)
 - Home Assistant (with zigbee2mqtt, nodered & mosquitto)
-- JDownloader headless (for MyJdownloader)
+- JDownloader (Download manager)
 
 ## Usage
 
@@ -65,6 +65,7 @@ Now that everything is ready you can use the services with the following URLs, b
 - https://play.home.lan => Jellyfin
 - https://paper.home.lan => Paperless
 - https://git.home.lan => Gitea
+- https://dl.home.lan => JDownloader
 
 ### Additional setup
 
