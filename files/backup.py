@@ -26,8 +26,8 @@ os.environ['AWS_SECRET_ACCESS_KEY'] = SERVER_CFG.get('access_key_secret')
 os.environ['RESTIC_REPOSITORY'] = SERVER_CFG.get('endpoint')
 os.environ['RESTIC_PASSWORD'] = SERVER_CFG.get('restic_password')
 
-IS_LOG_DEFFERED = True if LOG_TYPE in ['email',] else False
-DEFFERED_LOGS = []
+IS_LOG_DEFERRED = True if LOG_TYPE in ['email',] else False
+DEFERRED_LOGS = []
 
 def log(msg):
     print(msg)
@@ -41,7 +41,7 @@ def log(msg):
             },
         )
     elif LOG_TYPE == 'email':
-        DEFFERED_LOGS.append(msg)
+        DEFERRED_LOGS.append(msg)
 
 def run(cmd):
     if DRY:
@@ -106,7 +106,7 @@ for folder in config.get('folders', []):
 log('Backup process completed')
 
 
-if IS_LOG_DEFFERED:
+if IS_LOG_DEFERRED:
     if LOG_TYPE == 'email':
         email_from = config.get('notification', {}).get('from', '')
         email_to = config.get('notification', {}).get('to', '')
@@ -115,7 +115,7 @@ if IS_LOG_DEFFERED:
             print('Failed to send notification email: No from/to address')
 
         msg = "Backup report\n\n"
-        for txt in DEFFERED_LOGS:
+        for txt in DEFERRED_LOGS:
             msg += txt + "\n"
 
         msg = MIMEText("Here is the body of my message")

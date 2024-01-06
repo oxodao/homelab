@@ -14,13 +14,13 @@
         {
             "name": "Jellyfin",
             "path": "/opt/docker-apps/jellyfin",
-            "exclude": [],
+            "exclude": ["cache", "logs", "metadata", "transcode"],
             "is_docker_app": true
         },
         {
             "name": "Scrutiny",
             "path": "/opt/docker-apps/scrutiny",
-            "exclude": ["cache", "logs", "metadata", "transcode"],
+            "exclude": [],
             "is_docker_app": true
         },
         {
