@@ -26,7 +26,7 @@
 
     - name: "Installing some softwares"
       apt:
-        name: [ "zip", "unzip", "fuse", "zsh", "rsync", "sqlite3", "iptables", "vim" ]
+        name: [ "zip", "unzip", "fuse", "zsh", "rsync", "sqlite3", "iptables", "vim", "smartmontools" ]
 
     - name: "Installing ZFS"
       apt:

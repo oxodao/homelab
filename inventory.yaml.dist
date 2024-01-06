@@ -25,6 +25,7 @@ ungrouped:
       smtp_username: ''
       smtp_password: ''
       smtp_from: ''
+      smtp_to: ''
 
       public_ip: "HOMELAB PUBLIC IP (FOR WIREGUARD)"
       ip_prefix: "192.168.14."
@@ -60,21 +61,43 @@ ungrouped:
         - 194.36.144.87
 
       docker_apps:
+        - name: scrutiny
+          files_to_copy:
+            - src: '../files/scrutiny_collector.yaml'
+              dest: '/opt/docker-apps/scrutiny/config/collector.yaml'
+          folders_to_create:
+            - /opt/docker-apps/scrutiny/config
+            - /opt/docker-apps/scrutiny/influxdb
+
         - name: jellyfin
+          files_to_copy: []
           folders_to_create:
-            - cache
-            - config
-            - data
-            - logs
-            - metadata
-            - transcode
+            - /opt/docker-apps/jellyfin/cache
+            - /opt/docker-apps/jellyfin/config
+            - /opt/docker-apps/jellyfin/data
+            - /opt/docker-apps/jellyfin/logs
+            - /opt/docker-apps/jellyfin/metadata
+            - /opt/docker-apps/jellyfin/transcodes
+
         - name: gitea
+          files_to_copy: []
           folders_to_create:
-            - config
-            - data
+            - /opt/docker-apps/gitea/config
+            - /opt/docker-apps/gitea/data
+
         - name: jdownloader
+          files_to_copy: []
           folders_to_create:
-            - data
+            - /opt/docker-apps/jdownloader/data
+            - /mnt/sauvegarde/Downloads
+
+        - name: paperless
+          files_to_copy: []
+          folders_to_create:
+            - /opt/docker-apps/paperless/data
+            - /opt/docker-apps/paperless/export
+            - /mnt/documents/medias
+            - /mnt/documents/ingress
 
       nginx_apps:
         - app_name: paperless
@@ -89,6 +112,9 @@ ungrouped:
         - app_name: jdownloader
           short_name: dl
           port: 5800
+        - app_name: scrutiny
+          short_name: hd
+          port: 8185
         - app_name: cockpit
           short_name: cockpit
           port: 9090

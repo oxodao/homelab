@@ -33,6 +33,20 @@
         mode: "0700"
       loop: "{{ docker_apps }}"
 
+    - name: "Docker files to copy"
+      become: no
+      copy:
+        src: "{{ docker_app.1.src }}"
+        dest: "{{ docker_app.1.dest }}"
+        mode: "0755"
+        owner: "{{ansible_username}}"
+        group: "{{ansible_username}}"
+      with_subelements:
+        - "{{ docker_apps }}"
+        - "files_to_copy"
+      loop_control:
+        loop_var: "docker_app"
+
     - name: "Create folders for Docker apps"
       become: no
       file:
@@ -53,6 +67,12 @@
         src: "../templates/docker/{{item.name}}.yaml.j2"
         dest: "/opt/docker-apps/{{item.name}}/docker-compose.yaml"
       loop: "{{ docker_apps }}"
+
+    - name: "Creating scrutiny config"
+      become: no
+      template:
+        src: "../templates/scrutiny_main.yaml.j2"
+        dest: "/opt/docker-apps/scrutiny/config/scrutiny.yaml"
 
     - name: "Starting {{item}}"
       become: no

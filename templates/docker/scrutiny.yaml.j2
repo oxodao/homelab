@@ -1,0 +1,23 @@
+services:
+  app:
+    image: "ghcr.io/analogj/scrutiny:master-omnibus"
+    restart: "unless-stopped"
+    environment:
+      PUID: "1000"
+      PGID: "1000"
+      TZ: "Europe/Paris"
+      SCRUTINY_API_ENDPOINT: "http://127.0.0.1:8080"
+    volumes:
+      - "./config:/opt/scrutiny/config"
+      - "./influxdb:/opt/scrutiny/influxdb"
+      - "/run/udev:/run/udev:ro"
+    ports:
+      - "127.0.0.1:8185:8080"
+    cap_add:
+      - "SYS_RAWIO"
+      - "SYS_ADMIN"
+    devices:
+      - "/dev/nvme0:/dev/nmve0"
+      - "/dev/nvme0n1:/dev/nmve0n1"
+      - "/dev/sda:/dev/sda"
+      - "/dev/sdb:/dev/sdb"
