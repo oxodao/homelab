@@ -1,0 +1,46 @@
+---
+- hosts: "all"
+  become: yes
+  tags: [ "zfs-monitor" ]
+
+  tasks:
+    - name: "Installing zfs-zed"
+      apt:
+        name: [ "zfs-zed" ]
+        state: "present"
+        default_release: "{{ansible_distribution_release}}-backports"
+
+    - name: "Adding zfs-zed config"
+      template:
+        src: "../templates/zed.rc.j2"
+        dest: "/etc/zfs/zed.d/zed.rc"
+        owner: "root"
+        group: "root"
+        mode: "0600"
+
+    - name: "Enabling the service"
+      service:
+        name: "zed"
+        state: "restarted"
+        enabled: yes
+
+    - name: "Copy the scrub script"
+      copy:
+        src: "../files/scrub.sh"
+        dest: "/opt/scrub.sh"
+        mode: "0755"
+        owner: "root"
+        group: "root"
+
+    - name: "Create the scrub cron"
+      cron:
+        name: "ZFS scrub every two months"
+        minute: "0"
+        hour: "3"
+        day: "1"
+        weekday: "*"
+        month: "*/2"
+        user: "root"
+        job: "/opt/scrub.sh"
+        cron_file: "ansible_cron_zfs_scrub"
+        state: "present"
