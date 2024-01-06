@@ -26,9 +26,8 @@ ungrouped:
         - { hostname: 'severus', short_name: 'severus', ip: '10', description: 'Main desktop computer' }
         - { hostname: 'lockhart', short_name: 'lockhart', ip: '11', description: 'Main laptop (Huawei)' }
         - { hostname: 'tablet', short_name: 'tablet', ip: '12', description: 'Main tablet' }
-        - { hostname: 'op6', short_name: 'op6', ip: '13', description: 'Main phone' } ### RIP ONEPLUS 6, you will be missed ###
+        - { hostname: 'op6', short_name: 'op6', ip: '13', description: 'Main phone' }
         - { hostname: 'switch', short_name: 'switch', ip: '14', description: 'Main Nintendo Switch' }
-        - { hostname: 'nas', short_name: 'nas', ip: '100', description: 'Old Synology NAS' }
 
       wireguard:
         port: 48666 # This port should be UDP open on your ISP box
@@ -53,8 +52,21 @@ ungrouped:
         - 194.36.144.87
 
       docker_apps:
-        - jellyfin
-        - gitea
+        - name: jellyfin
+          folders_to_create:
+            - cache
+            - config
+            - data
+            - logs
+            - metadata
+            - transcode
+        - name: gitea
+          folders_to_create:
+            - config
+            - data
+        - name: jdownloader
+          folders_to_create:
+            - data
 
       nginx_apps:
         - app_name: paperless
@@ -66,3 +78,10 @@ ungrouped:
         - app_name: gitea
           short_name: git
           port: 3000
+        - app_name: jdownloader
+          short_name: dl
+          port: 5800
+        - app_name: cockpit
+          short_name: cockpit
+          port: 9090
+          custom_conf: true

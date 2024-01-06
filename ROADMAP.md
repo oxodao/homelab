@@ -3,10 +3,15 @@
 [x] Setup dns server
 [x] Install docker
 [ ] Setup docker composes
+    [x] Gitea
+    [x] Jellyfin
+    [ ] Home Assistant
+    [x] JDownloader
+    [ ] Immich (?)
 [x] Setup nginx
 [x] Setup SMB server # More or less, still have to debug permissions and autosetup the default shares
 [x] Setup wireguard server
-[ ] Setup internal email server (mailgun, to send monitoring emails)
+[ ] Setup internal email server (mailgun, to send monitoring emails, via msmtp ou dma)
 [ ] Setup hard drive monitoring
 [ ] Setup app monitoring (Maybe? Really useful?)
 [ ] Setup restic backups (Better setup than what I have currently)

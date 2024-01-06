@@ -51,7 +51,6 @@
         path: "/root/.bashrc"
         line: 'alias dc="docker-compose"'
         create: yes
-      when: ansible_env.HOME is defined
 
     # for my brain rot
     # no need for the full neovim so i'll stick with vim
@@ -61,7 +60,6 @@
         path: "/root/.bashrc"
         line: 'alias nvim="vim"'
         create: yes
-      when: ansible_env.HOME is defined
 
     - name: Add dc shortcut
       become: no
@@ -69,7 +67,6 @@
         path: "/home/{{ ansible_username }}/.bashrc"
         line: 'alias dc="docker-compose"'
         create: yes
-      when: ansible_env.HOME is defined
 
     # for my brain rot
     # no need for the full neovim so i'll stick with vim

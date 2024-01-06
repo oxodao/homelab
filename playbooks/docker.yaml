@@ -25,6 +25,17 @@
         group: "{{ansible_username}}"
         recurse: yes
 
+    # This one is done separately because this is the only case where its needed
+    # If it gets used on multiple container I'll automate it properly
+    - name: Create JDownloader's download folder
+      file:
+        path: /mnt/sauvegarde/Downloads
+        state: directory
+        mode: '0755'
+        owner: "{{ansible_username}}"
+        group: "{{ansible_username}}"
+        recurse: yes
+
     - name: "Create {{item}} dir"
       become: no
       file:

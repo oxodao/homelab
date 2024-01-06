@@ -1,16 +1,16 @@
 services:
-  server:
+  app:
     image: gitea/gitea:1.21-rootless
-    restart: unless-stopped
-    user: "1000:1000"
+    restart: 'unless-stopped'
+    user: '1000:1000'
     environment:
-      - USER_UID=1000
-      - USER_GID=1000
+      USER_UID: '1000'
+      USER_GID: '1000'
     volumes:
       - ./data:/var/lib/gitea
       - ./config:/etc/gitea
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - "127.0.0.1:3000:3000"
-      - "22:22"
+      - '127.0.0.1:3000:3000'
+      - '22:22'

@@ -1,0 +1,15 @@
+services:
+  app:
+    image: jlesage/jdownloader-2
+    restart: 'unless-stopped'
+    environment:
+      USER_ID: '1000'
+      GROUP_ID: '1000'
+      TZ: 'Europe/Paris'
+      MYJDOWNLOADER_DEVICE_NAME: '{{ hostname }}'
+    volumes:
+      - './data:/config:rw'
+      - '/mnt/sauvegarde/Downloads:/output:rw'
+    ports:
+      - '127.0.0.1:5800:5800'
+ 

@@ -23,16 +23,20 @@ Here's how to create it. Note that once the drives are setup you must not do it 
 
 ```
 $ zpool create nas_drives mirror /dev/disk/by-id/disk1 /dev/disk/by-id/disk2
-$ zpool create -o casesensitivity=mixed nas_drives/sauvegarde
-$ zpool create -o casesensitivity=mixed nas_drives/documents
-$ zpool create -o casesensitivity=mixed nas_drives/shares
-$ zpool create -o casesensitivity=mixed nas_drives/isos
-$ zfs set mountpoint=/mnt/sauvegarde nas_drives/sauvegarde
-$ zfs set mountpoint=/mnt/documents nas_drives/documents
-$ zfs set mountpoint=/mnt/shares nas_drives/shares
-$ zfs set mountpoint=/mnt/isos nas_drives/isos
+$ zfs create -o mountpoint=/mnt/sauvegarde -o casesensitivity=mixed nas_drives/sauvegarde
+$ zfs create -o mountpoint=/mnt/documents -o casesensitivity=mixed nas_drives/documents
+$ zfs create -o mountpoint=/mnt/images -o casesensitivity=mixed nas_drives/images
+$ zfs create -o mountpoint=/mnt/shares -o casesensitivity=mixed nas_drives/shares
+$ zfs create -o mountpoint=/mnt/isos -o casesensitivity=mixed nas_drives/isos
 $ zfs export nas_drives
 ```
+
+How this is organized:
+- `sauvegarde` is my main NAS storage, where I put my files, SMB should have authed-only access
+- `documents` is the Paperless' data folder, it should NOT be shared on SMB
+- `images` is the Immich data folder, it should NOT be shared on SMB
+- `shares` is where I put my movies, series, musics, ... It is SMB accessible in read-only for anonymous and read-write for authenticated
+- `isos` is where I put my Windows / Linux ISOs to be used with VMs / real hardware. It should have the same permissions as `shares`
 
 Note that they are case insensitive because we're making a samba share with them.
 
@@ -79,6 +83,12 @@ You also need to setup the metadata folder and the transcodes folder to be `/met
 Do the setup as you would do on a standard Gitea install. The only thing you have to change is the SSH port that should be `22` instead of `2222`.
 
 Don't forget to create your admin account during the setup!
+
+#### JDownloader
+
+It should work out of the box. You might want to setup your MyJdownloader account though.
+
+Keep in mind that the built-in UI is running under VNC server so you need to paste your clipboard in the box on the left so that it's forwarded to the app.
 
 ## License
 > Copyright © 2023 Oxodao
