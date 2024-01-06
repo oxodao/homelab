@@ -1,5 +1,6 @@
 collections:
   - community.crypto
+  - vladgh.samba
   - name: community.docker
     version: 3.6.0-b1 # Required for docker-compose v2
 

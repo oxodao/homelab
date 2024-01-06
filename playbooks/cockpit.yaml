@@ -6,7 +6,7 @@
   tasks:
     - name: "Installing Cockpit"
       apt:
-        name: [ "cockpit", "cockpit-file-sharing", "cockpit-identities" ]
+        name: [ "cockpit", "cockpit-identities" ]
         state: "present"
         default_release: "{{ansible_distribution_release}}-backports"
 

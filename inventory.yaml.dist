@@ -119,3 +119,41 @@ ungrouped:
           short_name: cockpit
           port: 9090
           custom_conf: true
+
+      # Caution, the ansible role for SMB does not create user accounts
+      # If adding new accounts, they should be created in `playbooks/samba.yaml` beforehand
+      # C.f. https://github.com/vladgh/ansible-collection-vladgh-samba
+      # Oh and also caution, it won't UPDATE the password once set,
+      # no clue how to do this, just remove the samba server and reinstall it
+      # this microsoft shit sucks anyway, prob should switch to NFS
+      # $ apt autoremove --purge samba smbclient limbsmbclient samba-common
+      # $ sudo rm -rf /var/cache/samba /etc/samba /run/samba /var/lib/samba /var/log/samba
+      samba_users:
+        - name: "oxodao"
+          password: "THE SAMBA PASSWORD"
+
+      samba_username_map:
+        - { from: "Oxodao", to: "oxodao" }
+
+      samba_shares:
+        - name: "Sauvegarde"
+          comment: "Main SMB Share"
+          path: "/mnt/sauvegarde"
+          group: "oxodao"
+          write_list: "oxodao"
+          public: no # No anonymous read access
+
+        - name: "Shares"
+          comment: "Shared files"
+          path: "/mnt/shares"
+          group: "oxodao"
+          write_list: "oxodao"
+          public: yes # Allow anonymous to read the files
+
+        - name: "ISOs"
+          comment: "ISO files for Windows / Linux"
+          path: "/mnt/isos"
+          group: "oxodao"
+          write_list: "oxodao"
+          guest_ok: yes
+          public: yes # Allow anonymous to read the files

@@ -1,0 +1,19 @@
+---
+- hosts: "all"
+  become: yes
+  tags: [ "samba" ]
+
+  tasks:
+    # This probably will have to change when I add multiple users / don't want main user access on something
+    # For now I have no clue on how to do it properly so meh
+    - name: "Allow main user on the folders"
+      file:
+        path: "{{item.path}}"
+        owner: "{{ ansible_username }}"
+        group: "{{ ansible_username }}"
+        mode: '0755'
+      loop: "{{ samba_shares }}"
+
+    - name: Include Samba Server role
+      include_role:
+        name: vladgh.samba.server

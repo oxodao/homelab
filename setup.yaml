@@ -5,5 +5,6 @@
 - import_playbook: playbooks/docker.yaml
 - import_playbook: playbooks/wireguard.yaml
 - import_playbook: playbooks/cockpit.yaml
+- import_playbook: playbooks/samba.yaml
 - import_playbook: playbooks/zfs_monitor.yaml
 - import_playbook: playbooks/nginx.yaml
