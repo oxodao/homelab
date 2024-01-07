@@ -119,6 +119,8 @@ ungrouped:
       ]
 
       has_zigbee_support: no
+      ha_api_encryption_key: no # Set the encryption key for ESPHome
+      ha_influx_db_token: no # The InfluxDB token
       #endregion
 
       nginx_apps:

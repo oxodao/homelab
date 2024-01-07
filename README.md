@@ -115,6 +115,18 @@ $ cd /opt/docker-apps/paperless
 $ dc exec app python3 manage.py createsuperuser
 ```
 
+#### Home Assistant
+
+This is a pain to setup so it's not fully automated.
+
+You will need to setup influxdb, on the server:
+```sh
+$ cd /opt/docker-apps/homeassistant
+$ docker compose exec influx influx setup --username "MY USERNAME" --password "MY PASSWORD" --token "MY_GENERATED_TOKEN" --retention 0 --org homelab --bucket homelab
+```
+
+The token should be set into `ha_influx_db` in the `inventory.yaml` for the next runs of this playbook. Either re-run it on the tag `docker` or update the `/opt/docker-apps/homeassistant/config/configuration.yaml` and restart the containers.
+
 ### Backup restoration
 
 In order to see how to restore a backup, refer to [disaster recovery docs](/docs/disaster-recovery.md).

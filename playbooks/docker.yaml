@@ -92,4 +92,56 @@
       become: no
       community.docker.docker_compose_v2:
         project_src: "/opt/docker-apps/{{item.name}}"
+        state: "restarted"
       loop: "{{ docker_apps }}"
+
+    #region Postinstall HomeAssistant
+    - name: "Ensure python-yaml is installed"
+      package:
+        name: "python3-yaml"
+        state: "present"
+
+    - name: "Set api key"
+      yaml_editor:
+        filename: "/opt/docker-apps/homeassistant/config/configuration.yaml"
+        action: "set"
+        key: "api"
+        value:
+          encryption:
+            key: "{{ ha_api_encryption_key }}"
+      when: ha_api_encryption_key != False
+
+    # Caution, it removes the whole API thing
+    # I only use the key in this section so its ok for me
+    # but my module might need something else
+    - name: "Remove the encryption key"
+      yaml_editor:
+        filename: "/opt/docker-apps/homeassistant/config/configuration.yaml"
+        action: "remove"
+        key: "api"
+      when: not ha_api_encryption_key
+
+    - name: "Set the influxdb config"
+      yaml_editor:
+        filename: "/opt/docker-apps/homeassistant/config/configuration.yaml"
+        key: "influxdb"
+        action: "set"
+        value:
+          api_version: "2"
+          ssl: "false"
+          host: "127.0.0.1"
+          port: "8086"
+          token: "sometoken"
+          organization: "homelab"
+          bucket: "homeassistant"
+
+    # Caution, it removes the whole influxdb thing
+    # I only use the key in this section so its ok for me
+    # but my module might need something else
+    - name: "Remove the encryption key"
+      yaml_editor:
+        filename: "/opt/docker-apps/homeassistant/config/configuration.yaml"
+        action: "remove"
+        key: "influxdb"
+      when: not ha_influx_db_token
+    #endregion
