@@ -1,0 +1,58 @@
+services:
+  app:
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    restart: "unless-stopped"
+    volumes:
+      - "./config:/config"
+      - "/etc/localtime:/etc/localtime:ro"
+    privileged: true
+    network_mode: host
+
+  mosquitto:
+    image: "eclipse-mosquitto:latest"
+    restart: "unless-stopped"
+    ports:
+      - "1883:1883"
+    volumes:
+      - "./mosquitto.conf:/mosquitto/config/mosquitto.conf"
+      - "./mosquitto/data:/mosquitto/data"
+      - "./mosquitto/logs:/mosquitto/log"
+      - "./users:/mosquitto/config/users"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  influx:
+    image: "influxdb:alpine"
+    ports:
+      - "127.0.0.1:8086:8086"
+    volumes:
+      - "./influxdb:/var/lib/influxdb2"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  nodered:
+    image: "nodered/node-red"
+    restart: "unless-stopped"
+    environment:
+      TZ: "Europe/Paris"
+    volumes:
+      - "./nodered_data:/data"
+    ports:
+      - "127.0.0.1:1880:1880"
+    extra_hosts:
+      - "domo.router.lan:host-gateway"
+
+  {% if has_zigbee_support is defined and has_zigbee_support %}
+  zigbee2mqtt:
+    image: "koenkk/zigbee2mqtt"
+    volumes:
+      - "./zigbee2mqtt_data:/app/data"
+      - "/run/udev:/run/udev:ro"
+    ports:
+      - "127.0.0.1:8129:8080"
+    environment:
+      TZ: "Europe/Paris"
+    devices:
+      - "/dev/serial/by-id/usb-Texas_Instruments_TI_CC2531_USB_CDC___0X00124B001CD49787-if00:/dev/ttyACM0"
+  {% endif %}

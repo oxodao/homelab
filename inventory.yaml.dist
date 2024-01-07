@@ -99,6 +99,28 @@ ungrouped:
             - /mnt/documents/medias
             - /mnt/documents/ingress
 
+        - name: "homeassistant"
+          files_to_copy:
+            - src: "../files/ha_mosquitto.conf"
+              dest: "/opt/docker-apps/homeassistant/mosquitto.conf"
+          folders_to_create:
+            - "/opt/docker-apps/homeassistant/config"
+            - "/opt/docker-apps/homeassistant/mosquitto/data"
+            - "/opt/docker-apps/homeassistant/mosquitto/log"
+            - "/opt/docker-apps/homeassistant/influxdb"
+            - "/opt/docker-apps/homeassistant/nodered_data"
+            - "/opt/docker-apps/homeassistant/zigbee2mqtt_data"
+
+      #region Home Assistant config
+      mosquitto_iot_user_password: "mymosquittouserpassword"
+
+      mosquitto_additional_users: [
+        "some_user:some_password",
+      ]
+
+      has_zigbee_support: no
+      #endregion
+
       nginx_apps:
         - app_name: paperless
           short_name: paper
@@ -119,6 +141,18 @@ ungrouped:
           short_name: cockpit
           port: 9090
           custom_conf: true
+        - app_name: "homeassistant"
+          short_name: "domo"
+          port: "8123"
+        - app_name: "nodered"
+          short_name: "nr"
+          port: "1880"
+        - app_name: "zigbee2mqtt"
+          short_name: "z2m"
+          port: "8129"
+        - app_name: "Influxdb"
+          short_name: "influx"
+          port: "8086"
 
       # Caution, the ansible role for SMB does not create user accounts
       # If adding new accounts, they should be created in `playbooks/samba.yaml` beforehand

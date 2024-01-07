@@ -66,6 +66,10 @@ Now that everything is ready you can use the services with the following URLs, b
 - https://paper.home.lan => Paperless
 - https://git.home.lan => Gitea
 - https://dl.home.lan => JDownloader
+- https://domo.home.lan => Home Assistant (Domotique = home automation in French)
+- https://influx.home.lan => Influx DB (From HA)
+- https://z2m.home.lan => Zigbee2mqtt (Only if enabled)
+- https://nr.home.lan => Nodered
 
 ### Additional setup
 
@@ -76,6 +80,10 @@ The most important, you need to initialize your restic repo the first time.
 ```
 $ AWS_ACCESS_KEY_ID=xxxxxxxx AWS_SECRET_ACCESS_KEY=xxxxxxxxxx restic -r s3:https://s3.eu-central-003.backblazeb2.com/xxxxxBUCKETxxxxx init
 ```
+
+Put a reminder on your phone, once every ~3-6 months to TEST the backups. In order to do so, create a folder `test-backup` somewhere and restore EACH app in it. Stop the docker containers that are running and start them in the `test-backup` folder and verify everything is right (Config correctly restored, all data are present, ...). THIS IS AN EXTREMLY IMPORTANT THING TO DO. BAD BACKUPS = NO BACKUPS.
+
+Optionally, use this time to export your s3 backup to a separate, external hard drive that you keep at one of your family member's house / a friend house to have a third backup to be extra safe. If for some reason you get kicked of your S3 account or the host catch fire (hi OVH).
 
 #### Jellyfin
 
@@ -106,6 +114,10 @@ You only have to setup your admin user, login to the homelab then:
 $ cd /opt/docker-apps/paperless
 $ dc exec app python3 manage.py createsuperuser
 ```
+
+### Backup restoration
+
+In order to see how to restore a backup, refer to [disaster recovery docs](/docs/disaster-recovery.md).
 
 ## License
 > Copyright © 2023 Oxodao

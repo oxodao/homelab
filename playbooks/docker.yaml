@@ -68,11 +68,25 @@
         dest: "/opt/docker-apps/{{item.name}}/docker-compose.yaml"
       loop: "{{ docker_apps }}"
 
+    #region Scrutiny custom setup
     - name: "Creating scrutiny config"
       become: no
       template:
         src: "../templates/scrutiny_main.yaml.j2"
         dest: "/opt/docker-apps/scrutiny/config/scrutiny.yaml"
+    #endregion
+
+    #region Home assistant custom setup
+    - name: "Adding mosquitto passwords"
+      copy:
+        content: "{{ 'iot:' + mosquitto_iot_user_password + '\n' + ('\n'.join(mosquitto_additional_users)) }}"
+        dest: "/opt/docker-apps/homeassistant/users"
+
+    - name: "Hash the passwords"
+      command:
+        chdir: "/opt/docker-apps/homeassistant"
+        argv: ["bash", "-c", "docker run --rm -v /opt/docker-apps/homeassistant/users:/mosquitto/config/users eclipse-mosquitto:latest mosquitto_passwd -U /mosquitto/config/users"]
+    #endregion
 
     - name: "Starting {{item}}"
       become: no
