@@ -122,17 +122,48 @@ This is a pain to setup so it's not fully automated.
 You will need to setup influxdb, on the server:
 ```sh
 $ cd /opt/docker-apps/homeassistant
-$ docker compose exec influx influx setup --username "MY USERNAME" --password "MY PASSWORD" --token "MY_GENERATED_TOKEN" --retention 0 --org homelab --bucket homelab
+$ docker compose exec influx influx setup --username "MY USERNAME" --password "MY PASSWORD" --token "MY_GENERATED_TOKEN" --retention 0 --org homelab --bucket homeassistant
 ```
 
-The token should be set into `ha_influx_db` in the `inventory.yaml` for the next runs of this playbook. Either re-run it on the tag `docker` or update the `/opt/docker-apps/homeassistant/config/configuration.yaml` and restart the containers.
+In order to setup HomeAssistant you need to make it work with the reverse proxy:
+```yaml
+http:
+  server_host: 127.0.0.1
+  use_x_forwarded_for: true
+  trusted_proxies: 127.0.0.1
+```
+
+in `/opt/docker-apps/homeassistant/config/configuration.yaml`.
+
+You also need to configure the influx_db connection in this file:
+```yaml
+influxdb:
+  api_version: 2
+  ssl: false
+  host: 127.0.0.1 # Note: HA is set up in network mode "host" so you can call directly 127.0.0.1
+  port: 8086
+  token: MY_GENERATED_TOKEN
+  organization: homelab
+  bucket: homeassistant
+```
+
+If you are using ESPHome you might also want to setup the token:
+```yaml
+api:
+  encryption:
+    key: "ESPHOME TOKEN"
+```
+
+Once this is done, you can `docker compose restart app`.
 
 ### Backup restoration
 
 In order to see how to restore a backup, refer to [disaster recovery docs](/docs/disaster-recovery.md).
 
 ## License
-> Copyright © 2023 Oxodao
-> This work is free. You can redistribute it and/or modify it under the
-> terms of the Do What The Fuck You Want To Public License, Version 2,
-> as published by Sam Hocevar. See the COPYING file for more details.
+```
+Copyright © 2023 Oxodao
+This work is free. You can redistribute it and/or modify it under the
+terms of the Do What The Fuck You Want To Public License, Version 2,
+as published by Sam Hocevar. See the COPYING file for more details.
+```

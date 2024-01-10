@@ -115,12 +115,11 @@ ungrouped:
       mosquitto_iot_user_password: "mymosquittouserpassword"
 
       mosquitto_additional_users: [
-        "some_user:some_password",
+        # "some_user:some_password",
       ]
 
       has_zigbee_support: no
-      ha_api_encryption_key: no # Set the encryption key for ESPHome
-      ha_influx_db_token: no # The InfluxDB token
+      zigbee_device_id: 'usb-Texas_Instruments_TI_CC2531_USB_CDC___0X00124B001CD49787-if00'
       #endregion
 
       nginx_apps:
