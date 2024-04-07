@@ -1,0 +1,32 @@
+ntp_timezone: 'Europe/Paris'
+ssh_port: '57982'
+
+tld: 'lan'
+
+hostname: '{{domain}}.{{tld}}'
+base_ip: '{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}'
+
+smtp_hostname: "smtp.mailgun.org"
+smtp_port: "587"
+smtp_tls: yes
+smtp_starttls: yes
+
+lan_ip_prefix: "192.168.14."
+
+# https://www.opennic.org/
+forwarded_dns_servers:
+  - 51.158.108.203
+  - 152.53.15.127
+  - 195.10.195.195
+
+predefined_machines:
+  - { hostname: 'home', short_name: 'home', ip: '2', description: 'My local homelab VM' }
+  - { hostname: 'severusdesk', short_name: 'severusdesk', ip: '10', description: 'Main desktop computer' }
+  - { hostname: 'lockhart', short_name: 'lockhart', ip: '11', description: 'Main laptop (Huawei)' }
+  - { hostname: 'tablet', short_name: 'tablet', ip: '12', description: 'Main tablet' }
+  - { hostname: 'op6', short_name: 'op6', ip: '13', description: 'Main phone' }
+  - { hostname: 'switch', short_name: 'switch', ip: '14', description: 'Main Nintendo Switch' }
+
+# Lets me append machines from the inventory
+# without having to add them all again
+machines: '{{ predefined_machines }}'

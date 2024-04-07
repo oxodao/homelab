@@ -1,0 +1,36 @@
+- name: 'Check if app folder exists'
+  stat:
+    path: '/home/{{ansible_username}}/{{app_name}}/docker-compose.yaml'
+  register: dc_exists
+
+- name: 'Stop the docker compose file (if exists)'
+  community.docker.docker_compose_v2:
+    project_src: '/home/{{ansible_username}}/{{app_name}}'
+    pull: 'missing'
+    state: 'absent'
+  when: dc_exists.stat.exists
+
+- name: 'Create the app folder'
+  file:
+    path: '/home/{{ansible_username}}/{{app_name}}'
+    state: 'directory'
+    mode: 0777
+
+- name: 'Copy the dockerfile'
+  template:
+    src: '../templates/{{app_name}}/docker-compose.yaml.j2'
+    dest: '/home/{{ansible_username}}/{{app_name}}/docker-compose.yaml'
+
+- name: 'Creating required dirs'
+  file:
+    path: '/home/{{ansible_username}}/{{app_name}}/{{item}}'
+    state: 'directory'
+    mode: 0700
+  loop: '{{ app_directories }}'
+  when: app_directories is defined
+
+- name: 'Start the docker compose file'
+  community.docker.docker_compose_v2:
+    project_src: '/home/{{ansible_username}}/{{app_name}}'
+    pull: 'missing'
+    state: 'present'

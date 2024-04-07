@@ -1,0 +1,24 @@
+services:
+  app:
+    image: 'deluan/navidrome:latest'
+    restart: 'unless-stopped'
+    user: 1000:1000
+    environment:
+      ND_SCANSCHEDULE: '1h'
+      ND_LOGLEVEL: 'info'
+      ND_SESSIONTIMEOUT: '24h'
+      ND_CACHEFOLDER: '/cache'
+      ND_MUSICFOLDER: '/shares/Music'
+      ND_AUTHWINDOWLENGTH: '60s'
+      ND_DEFAULTLANGUAGE: 'fr'
+      ND_IMAGECACHESIZE: '1024MB'
+      ND_SPOTIFY_ID: '{{spotify_client_id}}'
+      ND_SPOTIFY_SECRET: '{{spotify_client_secret}}'
+      ND_TRANSCODINGCACHESIZE: '1024MB'
+      ND_BASEURL: "" # @TODO: ? c'est dans leur doc comme ça, a voir si ça a un impact
+    volumes:
+      - './data:/data'
+      - './cache:/cache'
+      - '/mnt/shares:/shares:ro'
+    ports:
+      - '127.0.0.1:{{app_port}}:4533'

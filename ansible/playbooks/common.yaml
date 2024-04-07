@@ -1,0 +1,156 @@
+---
+- hosts: 'all'
+  become: yes
+  tags: ['common']
+
+  tasks:
+    - import_role: { name: 'geerlingguy.ntp' }
+    - import_role: { name: 'hifis.unattended_upgrades' }
+    - import_role: { name: 'geerlingguy.docker' }
+
+    - name: 'Installing some softwares'
+      apt:
+        name: [ 'zip', 'unzip', 'fuse', 'zsh', 'rsync', 'sqlite3', 'iptables', 'vim', 'git', 'exa', 'direnv']
+
+    - name: 'Enabling fuse'
+      modprobe:
+        name: 'fuse'
+        state: 'present'
+
+    - name: 'Change owner of /opt'
+      file:
+        path: '/opt'
+        owner: '{{ansible_username}}'
+        group: '{{ansible_username}}'
+
+    - name: 'Clone the dotfiles'
+      git:
+       repo: 'https://github.com/oxodao/dotfiles'
+       dest: '/opt/dotfiles'
+
+    # @TODO: Have a single, global OMZ install
+    # And use it for every users
+
+    - name: 'Check if zsh is installed for user'
+      stat:
+        path: '/home/{{ansible_username}}/.oh-my-zsh'
+      register: omz_user
+
+    - name: 'Check if zsh is installed for root'
+      stat:
+        path: '/root/.oh-my-zsh'
+      register: omz_root
+
+    - name: 'Download Oh My Zsh installation script'
+      get_url:
+        url: 'https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh'
+        dest: '/tmp/install_ohmyzsh.sh'
+      when: (not omz_user.stat.exists) or (not omz_root.stat.exists)
+
+    - name: 'Run Oh My Zsh installation script for user'
+      become: no
+      command: 'sh /tmp/install_ohmyzsh.sh --unattended'
+      register: ohmyzsh_result
+      failed_when: "'FAILED' in ohmyzsh_result.stderr"
+      when: not omz_user.stat.exists
+
+    - name: 'Run Oh My Zsh installation script for root'
+      command: 'sh /tmp/install_ohmyzsh.sh --unattended'
+      register: ohmyzsh_result
+      failed_when: "'FAILED' in ohmyzsh_result.stderr"
+      when: not omz_root.stat.exists
+
+    - name: "Install matboll's theme for user"
+      become: no
+      copy:
+        src: '../files/mattboll.zsh-theme'
+        dest: '/home/{{ansible_username}}/.oh-my-zsh/themes/mattboll.zsh-theme'
+
+    - name: "Install matboll's theme for root"
+      copy:
+        src: '../files/mattboll.zsh-theme'
+        dest: '/root/.oh-my-zsh/themes/mattboll.zsh-theme'
+
+    - name: 'Remove the user config folder'
+      file:
+        path: '/home/{{ansible_username}}/.config'
+        state: 'absent'
+
+    - name: 'Remove root config folder'
+      file:
+        path: '/root/.config'
+        state: 'absent'
+
+    - name: 'Symlink the config for the user'
+      become: no
+      file:
+        src: '/opt/dotfiles/config'
+        dest: '/home/{{ansible_username}}/.config'
+        state: 'link'
+
+    - name: 'Symlink the config for root'
+      file:
+        src: '/opt/dotfiles/config'
+        dest: '/root/.config'
+        state: 'link'
+
+    - name: 'Remove the user zshrc'
+      file:
+        path: '/home/{{ansible_username}}/.zshrc'
+        state: 'absent'
+
+    - name: 'Remove root zshrc'
+      file:
+        path: '/root/.zshrc'
+        state: 'absent'
+
+    - name: 'Symlink the zshrc for the user'
+      become: no
+      file:
+        src: '/opt/dotfiles/zshrc'
+        dest: '/home/{{ansible_username}}/.zshrc'
+        state: 'link'
+
+    - name: 'Symlink the zshrc for root'
+      file:
+        src: '/opt/dotfiles/zshrc'
+        dest: '/root/.zshrc'
+        state: 'link'
+
+    - name: 'Set the zsh shell for user'
+      user:
+        name: '{{ansible_username}}'
+        shell: '/usr/bin/zsh'
+
+    - name: 'Set the zsh shell for root'
+      user:
+        name: 'root'
+        shell: '/usr/bin/zsh'
+
+    - name: 'Create the memo file for the user'
+      become: no
+      file:
+        path: '/home/{{ansible_username}}/.memo'
+        state: 'touch'
+
+    - name: 'Create the memo file for root'
+      file:
+        path: '/root/.memo'
+        state: 'touch'
+
+    - name: 'Create required groups'
+      group:
+        name: '{{item}}'
+        state: 'present'
+      loop:
+        - 'sudo'
+        - 'docker'
+
+    - name: 'Add user to the correct groups'
+      user:
+        name: '{{ansible_username}}'
+        groups: '{{item}}'
+        append: yes
+      loop:
+        - 'sudo'
+        - 'docker'

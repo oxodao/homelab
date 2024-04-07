@@ -1,0 +1,31 @@
+---
+- hosts: 'public'
+  become: no
+  tags: ['jellyfin']
+
+  tasks:
+    - name: 'Mount the shares shared folder'
+      include_tasks:
+        file: '../tasks/add_nas_mount.yaml'
+      vars:
+        mount_name: 'shares'
+
+    - name: 'Copying the docker-compose file'
+      include_tasks:
+        file: '../tasks/add_docker_app.yaml'
+      vars:
+        app_name: 'jellyfin'
+        app_port: '8096'
+        app_directories:
+          - 'config'
+          - 'cache'
+          - 'transcodes'
+          - 'metadata'
+
+    - name: 'Setting-up nginx for Jellyfin'
+      include_tasks:
+        file: '../tasks/add_nginx_app.yaml'
+      vars:
+        app_name: 'jellyfin'
+        app_port: '8096'
+        enabled: yes

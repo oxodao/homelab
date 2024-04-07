@@ -1,0 +1,22 @@
+services:
+  app:
+    image: linuxserver/jellyfin:latest
+    restart: 'unless-stopped'
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: 'Europe/Paris'
+      JELLYFIN_PublishedServerUrl: 'https://play.{{hostname}}'
+    volumes:
+      - './config:/config'
+      - './cache:/cache'
+      - './transcodes:/transcodes'
+      - './metadata:/metadata'
+      - '/mnt/shares:/shares'
+    devices:
+      - '/dev/dri/renderD128:/dev/dri/renderD128'
+      - '/dev/dri/card0:/dev/dri/card0'
+    ports:
+      - '127.0.0.1:{{app_port}}:8096'
+      - '7359:7359' # Autodiscovery
+      - '1900:1900' # Autodiscovery

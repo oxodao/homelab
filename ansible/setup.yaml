@@ -1,0 +1,7 @@
+---
+- import_playbook: 'playbooks/detect_ssh.yaml'
+- import_playbook: 'playbooks/common.yaml'
+- import_playbook: 'playbooks/dns.yaml'
+- import_playbook: 'playbooks/reverse_proxy.yaml'
+- import_playbook: 'playbooks/jellyfin.yaml'
+- import_playbook: 'playbooks/navidrome.yaml'

@@ -1,0 +1,64 @@
+---
+- hosts: 'all'
+  tags: ['reverseproxy']
+  become: yes
+
+  tasks:
+    - name: 'Install nginx'
+      apt:
+        name: ['nginx', 'openssl']
+        state: 'present'
+
+    - name: 'Config nginx'
+      copy:
+        src: '../files/nginx.conf'
+        dest: '/etc/nginx.conf'
+
+    - name: 'Creating nginx dirs'
+      file:
+        path: '{{item}}'
+        state: 'directory'
+        mode: 0700
+      loop:
+        - '/etc/nginx/sites-available'
+        - '/etc/nginx/sites-enabled'
+        - '/etc/nginx/snippets'
+        - '/opt/ssl'
+
+    - name: 'Copying the SSL snippet'
+      copy:
+        src: '../files/ssl.conf'
+        dest: '/etc/nginx/snippets/ssl.conf'
+
+    - name: 'Check if dhparam exists'
+      stat:
+        path: '/opt/ssl/dhparam.pem'
+      register: dhparam_stat
+
+    - name: 'Generating dhparam (This can take a long time)'
+      openssl_dhparam:
+        path: '/opt/ssl/dhparam.pem'
+        size: 2048
+      when: not dhparam_stat.stat.exists
+
+    - name: 'Adding public key'
+      copy:
+        content: '{{nginx_public_key}}'
+        owner: 'root'
+        group: 'root'
+        mode: 0600
+        dest: '/opt/ssl/cert.crt'
+
+    - name: 'Adding private key'
+      copy:
+        content: '{{nginx_private_key}}'
+        owner: 'root'
+        group: 'root'
+        mode: 0600
+        dest: '/opt/ssl/cert.key'
+
+    - name: 'Enabling nginx'
+      service:
+        name: 'nginx'
+        enabled: yes
+        state: 'restarted'

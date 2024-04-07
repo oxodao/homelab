@@ -1,0 +1,15 @@
+- name: 'Creating the mount folder'
+  become: yes
+  file:
+    path: '/mnt/{{mount_name}}'
+    state: 'directory'
+    mode: 0777
+
+- name: 'Mount the mount (and add it to fstab)'
+  become: yes
+  mount:
+    fstype: 'cifs'
+    src: '{{smb_mounts[mount_name]["host"]}}'
+    path: '/mnt/{{mount_name}}'
+    opts: 'username={{smb_mounts[mount_name]["username"]}},password={{smb_mounts[mount_name]["password"]}}'
+    state: 'mounted'

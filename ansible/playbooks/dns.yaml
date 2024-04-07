@@ -1,0 +1,29 @@
+---
+- hosts: 'public'
+  tags: ['dns']
+  become: yes
+
+  vars:
+    homelab: 
+      hostname: 'public'
+      short_name: '{{domain}}'
+      ip: "{{base_ip.split('.')[-1]}}"
+      description: 'My public homelab VM'
+    current_machines: "{{ [ homelab ] + machines }}"
+
+  tasks:
+    - name: 'Install dnsmasq'
+      apt:
+        name: 'dnsmasq'
+        state: 'present'
+
+    - name: 'Config dnsmasq'
+      template:
+        src: '../templates/dnsmasq.conf.j2'
+        dest: '/etc/dnsmasq.conf'
+
+    - name: 'Enable & start the dnsmasq service'
+      service:
+        name: 'dnsmasq'
+        state: 'restarted'
+        enabled: yes
