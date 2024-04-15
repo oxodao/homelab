@@ -12,19 +12,28 @@ Le serveur DNS se charge de traduire les domaines en `.lan` vers l'ip de la mach
 $ sudo apt install dnsmasq
 ```
 
-> @TODO
->
-> Vérifier que la config marche avec deux VMs.
->
-> Voir comment faire marche l'IPv6 dans xcp-ng pour
-> les androids qui veulent pas d'un DNS ipv4.
-
 Ajouter la configuration dans `/etc/dnsmasq.conf`:
 ```
-domain-needed # Ne transmet pas à OpenNIC les requête qui ne sont pas des noms de domaines complets
+# Never forward plain names (without a dot or domain part)
+domain-needed
+
+# Never forward addresses in the non-routed address spaces.
 bogus-priv
-no-resolv # N'utilise pas le fichier resolv.conf de la vm
-no-hosts # N'utilise pas le fichier hosts de la vm
+
+# Don't read /etc/resolv.conf or any other file.
+no-resolv
+
+# Don't read /etc/hosts file
+no-hosts
+
+# Don't poll changes from external files (like /etc/resolv.conf)
+no-poll
+
+# Force the upstream servers to be used in order
+strict-order
+
+# Don't store in cache the invalid resolutions
+no-negcache
 
 # Serveur DNS forwardé (Ce qui n'est pas résolu par le serveur local)
 # Il peut y en avoir plusieurs
