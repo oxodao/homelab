@@ -30,6 +30,11 @@
         src: '../files/ssl.conf'
         dest: '/etc/nginx/snippets/ssl.conf'
 
+    - name: 'Copying the RP snippet'
+      copy:
+        src: '../files/reverse_proxy.conf'
+        dest: '/etc/nginx/snippets/reverse_proxy.conf'
+
     - name: 'Check if dhparam exists'
       stat:
         path: '/opt/ssl/dhparam.pem'

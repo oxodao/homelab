@@ -1,0 +1,16 @@
+services:
+  app:
+    image: 'gitea/gitea:latest-rootless'
+    restart: 'unless-stopped'
+    environment:
+      USER: '{{ansible_username}}'
+      USER_UID: 1000
+      USER_GID: 1000
+    volumes:
+      - './config:/etc/gitea'
+      - '/etc/timezone:/etc/timezone:ro'
+      - '/etc/localtime:/etc/localtime:ro'
+      - '/mnt/git:/var/lib/gitea'
+    ports:
+      - '127.0.0.1:{{app_port}}:3000'
+      - '22:22'

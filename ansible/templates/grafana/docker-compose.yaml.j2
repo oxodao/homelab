@@ -1,0 +1,13 @@
+services:
+  app:
+    image: 'grafana/grafana-oss'
+    restart: 'unless-stopped'
+    user: 1000:1000
+    environment:
+      GF_SERVER_ROOT_URL: 'https://grafana.{{hostname}}'
+    volumes:
+      - './data:/var/lib/grafana'
+    ports:
+      - '127.0.0.1:{{app_port}}:3000'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'

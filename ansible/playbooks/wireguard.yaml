@@ -1,0 +1,33 @@
+---
+- hosts: 'all'
+  tags: ['wireguard']
+  become: yes
+
+  tasks:
+    - name: 'Ensuring ip forwarding is enabled'
+      sysctl:
+        name: 'net.ipv4.ip_forward'
+        value: '1'
+        sysctl_set: yes
+
+    - name: 'Install Wireguard'
+      apt:
+        name: ['wireguard', 'wireguard-tools']
+        state: 'present'
+
+    - name: 'Ensuring wg folder exists'
+      file:
+        path: '/etc/wireguard'
+        state: 'directory'
+        mode: 0700
+
+    - name: 'Adding config'
+      template:
+        src: '../templates/wg0.conf.j2'
+        dest: '/etc/wireguard/wg0.conf'
+
+    - name: 'Enabling wireguard'
+      service:
+        name: 'wg-quick@wg0'
+        enabled: yes
+        state: 'restarted'

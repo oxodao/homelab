@@ -1,0 +1,28 @@
+---
+- hosts: 'local'
+  become: no
+  tags: ['gitea']
+
+  tasks:
+    - name: 'Mount the shares shared folder'
+      include_tasks:
+        file: '../tasks/add_nas_mount.yaml'
+      vars:
+        mount_name: 'git'
+
+    - name: 'Copying the docker-compose file'
+      include_tasks:
+        file: '../tasks/add_docker_app.yaml'
+      vars:
+        app_name: 'gitea'
+        app_port: '3000'
+        app_directories:
+          - config
+
+    - name: 'Setting-up nginx for Gitea'
+      include_tasks:
+        file: '../tasks/add_nginx_app.yaml'
+      vars:
+        app_name: 'gitea'
+        app_port: '3000'
+        enabled: yes

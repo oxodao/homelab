@@ -1,0 +1,42 @@
+---
+- hosts: 'local'
+  become: no
+  tags: ['homeassistant']
+
+  tasks:
+    - name: 'Create the app folder'
+      file:
+        path: '/home/{{ansible_username}}/homeassistant'
+        state: 'directory'
+        mode: 0777
+
+    - name: 'Copying the mosquitto config file'
+      template:
+        src: '../templates/homeassistant/mosquitto.conf.j2'
+        dest: '/home/{{ansible_username}}/homeassistant/mosquitto.conf'
+
+    - name: 'Copying the mosquitto users file'
+      template:
+        src: '../templates/homeassistant/mosquitto.users.j2'
+        dest: '/home/{{ansible_username}}/homeassistant/mosquitto_users'
+
+    - name: 'Copying the docker-compose file'
+      include_tasks:
+        file: '../tasks/add_docker_app.yaml'
+      vars:
+        app_name: 'homeassistant'
+        app_directories:
+          - mosquitto
+          - mosquitto/data
+          - mosquitto/logs
+          - config
+          - influxdb
+          - nodered_data
+          - zigbee2mqtt_data
+
+    - name: 'Setting-up nginx for HomeAssistant'
+      include_tasks:
+        file: '../tasks/add_nginx_app.yaml'
+      vars:
+        app_name: 'homeassistant'
+        enabled: yes

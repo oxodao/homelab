@@ -21,7 +21,7 @@ Le NAS Synology possède toutes les data et expose plusieurs montage samba:
 - documents (Montage utilisé pour Paperless)
 - images (Montage utilisé pour Immich)
 
-Pour la gestion des droits, j'ai mon utilisateur perso pour la connexion depuis mes machines, et des utilisateurs scopés en RO sur iso et shares pour les différents services ansi qu'un utilisateur RW pour Paperless, chacun n'ayant accès qu'aux shares qu'ils ont besoin.
+Pour la gestion des droits, j'ai mon utilisateur perso pour la connexion depuis mes machines, et des utilisateurs scopés en RO sur iso et shares pour les différents services ansi qu'un utilisateur RW pour Paperless et un Gitea, chacun n'ayant accès qu'aux shares qu'ils ont besoin.
 
 Enfin le PC multimédia est un simple debian 12 qui accèdes aux services hébergés sur le serveur.
 
@@ -53,12 +53,12 @@ Ce guide note particulièrement le setup du serveur puisque le reste est basique
 10. [Setup Immich](docs/setup_immich.md)
 11. [Setup JDownloader](docs/setup_jdownloader.md)
 12. [Setup HomeAssistant](docs/setup_ha.md)
+13. [Setup Grafana](docs/setup_grafana.md)
 
 -- Setup sécu --
 
-13. [Setup serveurs VPN](docs/setup_vpn.md)
-14. [Setup firewall](docs/setup_firewall.md)
-15. [Setup cloudflared](docs/setup_cloudflared.md)
+14. [Setup serveurs VPN](docs/setup_vpn.md)
+15. [Setup firewall](docs/setup_firewall.md)
 16. [Setup backups](docs/setup_backups.md)
 
 > A partir de ce point la, il s'agît d'informations sur
@@ -69,6 +69,12 @@ Ce guide note particulièrement le setup du serveur puisque le reste est basique
 18. [Renouveller les certificats SSL](docs/renew_ssl.md)
 19. [Restorer un backup](docs/disaster_recovery.md)
 20. [Backup day](docs/backup_day.md)
+
+## Home Assistant
+
+HA à sa propre partie de ce wiki car il a beaucoup de customisations.
+
+[Wiki Home Assistant](docs/ha/README.md)
 
 ## Roadmap
 

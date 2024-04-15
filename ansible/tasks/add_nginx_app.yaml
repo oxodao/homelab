@@ -1,7 +1,7 @@
 - name: 'Adding the nginx config'
   become: yes
   template:
-    src: '../templates/{{app_name}}/nginx.conf'
+    src: '../templates/{{app_name}}/nginx.conf.j2'
     dest: '/etc/nginx/sites-available/{{app_name}}.conf'
 
 - name: 'Symlinking if enabled'

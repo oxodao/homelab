@@ -90,9 +90,13 @@ server {
     listen      80;
     server_name play.public.lan;
 
-    # Using 307 ensure that the client will follow the redirection on POST requests
-    # Cf. https://softwareengineering.stackexchange.com/questions/99894/why-doesnt-http-have-post-redirect
-    return 307 https://$server_name$request_uri;
+    # No redirecting to https version
+    # Because the android app sucks
+    # And won't allow self-signed certs
+    location / {
+        proxy_pass http://localhost:8096;
+        include snippets/reverse_proxy.conf;
+    }
 }
 
 server {
@@ -103,19 +107,7 @@ server {
 
     location / {
         proxy_pass http://localhost:8096;
-        proxy_http_version 1.1;
-        proxy_redirect off;
-        proxy_buffering off;
-        proxy_pass_request_headers on;
-
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-Protocol $scheme;
-        proxy_set_header X-Forwarded-Host $http_host;
+        include snippets/reverse_proxy.conf;
     }
 }
 ```
@@ -142,10 +134,10 @@ Le setup commence par la langue, sélectionner Français.
 Créer le compte utilisateur.
 
 Ajouter ensuite les médiatèques suivantes, laisser la config par défaut:
-- Type: Films, Dossiers: /shares/Films
-- Type: Émissions, Dossiers: /shares/Series
-- Type: TV, Dossiers: /shares/TV
-- Type: Concerts, Dossiers: /shares/Concerts
+- Type: Films, Dossiers: /shares/Films, Nom: Films
+- Type: Émissions, Dossiers: /shares/Series, Nom: Séries
+- Type: Émissions, Dossiers: /shares/TV, Nom: TV
+- Type: Clips musicaux, Dossiers: /shares/Concerts, Nom: Concerts
 
 Langue de métadonnées: FR, Pays FR.
 

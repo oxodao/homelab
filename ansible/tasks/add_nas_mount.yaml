@@ -4,6 +4,8 @@
     path: '/mnt/{{mount_name}}'
     state: 'directory'
     mode: 0777
+    owner: '{{ansible_username}}'
+    group: '{{ansible_username}}'
 
 - name: 'Mount the mount (and add it to fstab)'
   become: yes
@@ -11,5 +13,5 @@
     fstype: 'cifs'
     src: '{{smb_mounts[mount_name]["host"]}}'
     path: '/mnt/{{mount_name}}'
-    opts: 'username={{smb_mounts[mount_name]["username"]}},password={{smb_mounts[mount_name]["password"]}}'
+    opts: 'username={{smb_mounts[mount_name]["username"]}},password={{smb_mounts[mount_name]["password"]}},uid=1000,gid=1000'
     state: 'mounted'

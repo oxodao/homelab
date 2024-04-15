@@ -108,6 +108,23 @@ ssl_certificate /opt/ssl/{HOSTNAME}.lan.crt;
 ssl_certificate_key /opt/ssl/{HOSTNAME}.lan.key;
 ```
 
+On va aussi ajouter un snippet facilitant le reverse-proxying dans `/etc/nginx/snippets/reverse_proxy.conf`:
+```
+proxy_http_version 1.1;
+proxy_redirect off;
+proxy_buffering off;
+proxy_pass_request_headers on;
+
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection "Upgrade";
+proxy_set_header Host $host;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $remote_addr;
+proxy_set_header X-Forwarded-Proto $scheme;
+proxy_set_header X-Forwarded-Protocol $scheme;
+proxy_set_header X-Forwarded-Host $http_host;
+```
+
 ## Lancement de nginx
 ```sh
 $ sudo systemctl enable --now nginx
@@ -139,19 +156,7 @@ server {
 
     location / {
         proxy_pass http://localhost:{PORT};
-        proxy_http_version 1.1;
-        proxy_redirect off;
-        proxy_buffering off;
-        proxy_pass_request_headers on;
-
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-Protocol $scheme;
-        proxy_set_header X-Forwarded-Host $http_host;
+        include snippets/reverse_proxy.conf;
     }
 }
 ```

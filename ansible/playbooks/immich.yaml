@@ -1,0 +1,46 @@
+---
+- hosts: 'local'
+  become: no
+  tags: ['immich']
+
+  tasks:
+    - name: 'Mount the shares shared folder'
+      include_tasks:
+        file: '../tasks/add_nas_mount.yaml'
+      vars:
+        mount_name: 'images'
+
+    - name: 'Create the app folder'
+      file:
+        path: '/home/{{ansible_username}}/immich'
+        state: 'directory'
+        mode: 0777
+
+    - name: 'Copying the .env file'
+      template:
+        src: '../templates/immich/env.j2'
+        dest: '/home/{{ansible_username}}/immich/.env'
+      vars:
+        images_folder: "/mnt/images{{'/test' if debug_in_vm is defined and debug_in_vm else ''}}"
+
+    - name: 'Copying the hwaccel config file'
+      template:
+        src: '../templates/immich/hwaccel.transcoding.yaml.j2'
+        dest: '/home/{{ansible_username}}/immich/hwaccel.transcoding.yml'
+
+    - name: 'Copying the docker-compose file'
+      include_tasks:
+        file: '../tasks/add_docker_app.yaml'
+      vars:
+        app_name: 'immich'
+        app_port: '2283'
+        app_directories:
+          - 'pgdata'
+
+    - name: 'Setting-up nginx for Immich'
+      include_tasks:
+        file: '../tasks/add_nginx_app.yaml'
+      vars:
+        app_name: 'immich'
+        app_port: '2283'
+        enabled: yes

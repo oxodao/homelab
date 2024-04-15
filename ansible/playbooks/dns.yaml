@@ -9,7 +9,12 @@
       short_name: '{{domain}}'
       ip: "{{base_ip.split('.')[-1]}}"
       description: 'My public homelab VM'
-    current_machines: "{{ [ homelab ] + machines }}"
+    homelab_local:
+      hostname: "{{hostvars['rubeus-local']['domain']}}"
+      short_name: "{{hostvars['rubeus-local']['domain']}}"
+      ip: "{{hostvars['rubeus-local']['ansible_host'].split('.')[-1]}}"
+      description: 'My local homelab VM'
+    current_machines: "{{ [ homelab, homelab_local ] + machines }}"
 
   tasks:
     - name: 'Install dnsmasq'

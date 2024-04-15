@@ -1,0 +1,24 @@
+server {
+    listen      80;
+    server_name play.{{hostname}};
+    
+    # No redirecting to https version
+    # Because the android app sucks
+    # And won't allow self-signed certs
+    location / {
+        proxy_pass http://localhost:{{app_port}};
+        include snippets/reverse_proxy.conf;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    server_name play.{{hostname}};
+
+    include snippets/ssl.conf;
+
+    location / {
+        proxy_pass http://localhost:{{app_port}};
+        include snippets/reverse_proxy.conf;
+    }
+}

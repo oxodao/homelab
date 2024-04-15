@@ -1,80 +1,148 @@
 public:
   hosts:
     rubeus-public:
-      ansible_host: 'IP_VM_PUBLIC'
+      ansible_host: '192.168.14.1'
       ansible_username: 'oxodao'
-      ansible_become_password: '{{ lookup("env", "ANSIBLE_BECOME_PASSWORD") }}'
+      ansible_become_password: '{{ lookup("env", "ANSIBLE_ROOT_PWT_PUBLIC") }}'
 
       # Cela donnera domain.tld pour les noms de domaines
       domain: 'public'
 
       # Utilisé pour le monitoring des diverses app
-      smtp_username: 'SMTP USERNAME'
-      smtp_password: 'SMTP PASSWORD'
-      smtp_from: 'SMTP FROM'
-      smtp_to: 'SMTP TO'
+      smtp_username: ''
+      smtp_password: ''
+      smtp_from: ''
+      smtp_to: ''
 
       # Utilisé par Navidrome pour récupérer
       # les informations sur les artistes et les covers
-      spotify_client_id: 'SPOTIFY CLIENT ID'
-      spotify_client_secret: 'SPOTIFY CLIENT SECRET'
+      spotify_client_id: ''
+      spotify_client_secret: ''
 
       # Les montages SMB qui seront utilisés
       smb_mounts:
         shares:
-          host: '//[IP NAS]/Shares'
+          host: '//192.168.14.100/Shares'
           username: 'homelab_shares'
-          password: '[MDP NAS]'
+          password: ''
 
       # Certificat SSL utilisé par nginx
       nginx_public_key: |2
         -----BEGIN CERTIFICATE-----
-        CLE PUBLIQUE CERTIFICAT SSL
+        CLÉ PUBLIQUE NGINX "PUBLIC"
         -----END CERTIFICATE-----
       
       nginx_private_key: |2
         -----BEGIN PRIVATE KEY-----
-        CLE PRIVEE CERTIFICAT SSL
+        CLÉ PRIVÉE NGINX "PUBLIC"
         -----END PRIVATE KEY-----
-
-      # Permet d'ajouter des machines à celles déjà existantes directement dans le inventory
-      machines: |2
-        {{
-          predefined_machines + [
-            {"hostname": "some_other_machine", "short_name": "machine", "ip": "180", "description": "Some other machine"},
-          ]
-        }}
 
       # Configuration du wireguard
       wireguard:
-        public:
-          ip_prefix: '192.168.70.'
-          port: 'PORT WG PUBLIC'
-          private_key: ''
-          public_key: ''
+        ip_prefix: '192.168.70.'
+        port: ''
+        private_key: ''
+        public_key: ''
 
-          # Les machines auront pour IP assignée
-          # le prefix d'ip fournis plus haut
-          # puis une ip machine égale à celle sur
-          # le réseau local.
-          machines:
-            - hostname: 'machine_name'
-              public_key: ''
+        post_up:
+          - 'iptables -A FORWARD -i %i -j DROP'
+          - 'iptables -A FORWARD -o %i -j DROP'
 
-        private:
-          ip_prefix: '192.168.66.'
-          port: 'PORT WG PRIVEE'
-          private_key: ''
-          public_key: ''
+        post_down:
+          - 'iptables -D FORWARD -i %i -j DROP'
+          - 'iptables -D FORWARD -o %i -j DROP'
 
-          # Les machines auront pour IP assignée
-          # le prefix d'ip fournis plus haut
-          # puis une ip machine égale à celle sur
-          # le réseau local.
-          machines:
-            - hostname: 'lockhart'
-              public_key: ''
-            - hostname: 'tablet'
-              public_key: ''
-            - hostname: 'op6'
-              public_key: ''
+        # Les machines auront pour IP assignée
+        # le prefix d'ip fournis plus haut
+        # puis une ip machine égale à celle sur
+        # le réseau local.
+        machines:
+          - hostname: 'user'
+            public_key: ''
+            ip: '80'
+
+local:
+  hosts:
+    rubeus-local:
+      ansible_host: '192.168.14.2'
+      ansible_username: 'oxodao'
+      ansible_become_password: '{{ lookup("env", "ANSIBLE_ROOT_PWD_LOCAL") }}'
+
+      # Cela donnera domain.tld pour les noms de domaines
+      domain: 'home'
+
+      # Utilisé pour le monitoring des diverses app
+      smtp_username: ''
+      smtp_password: ''
+      smtp_from: ''
+      smtp_to: ''
+
+      jdownloader_email: ''
+      jdownloader_password: ''
+
+      # Utilisateurs ayant accès au MQTT de Home Assistant
+      mqtt_users:
+        - username: ''
+          password: ''
+
+      # Les montages SMB qui seront utilisés
+      smb_mounts:
+        documents:
+          host: '//192.168.14.100/Documents'
+          username: 'homelab_documents'
+          password: ''
+        git:
+          host: '//192.168.14.100/Git'
+          username: 'homelab_git'
+          password: ''
+        images:
+          host: '//192.168.14.100/Images'
+          username: 'homelab_images'
+          password: ''
+        shares:
+          host: '//192.168.14.100/Shares'
+          username: 'homelab_shares_rw'
+          password: ''
+
+      # Certificat SSL utilisé par nginx
+      nginx_public_key: |2
+        -----BEGIN CERTIFICATE-----
+        CLÉ PUBLIQUE NGINX "LOCAL"
+        -----END CERTIFICATE-----
+
+      nginx_private_key: |2
+        -----BEGIN PRIVATE KEY-----
+        CLÉ PRIVÉE NGINX "LOCAL"
+        -----END PRIVATE KEY-----
+
+      wireguard:
+        ip_prefix: '192.168.66.'
+        port: ''
+        private_key: ''
+        public_key: ''
+
+        post_up:
+          - 'iptables -A FORWARD -i %i -j ACCEPT'
+          - 'iptables -A FORWARD -o %i -j ACCEPT'
+          - 'iptables -t nat -A POSTROUTING -o enX0 -j MASQUERADE'
+
+        post_down:
+          - 'iptables -D FORWARD -i %i -j ACCEPT'
+          - 'iptables -D FORWARD -o %i -j ACCEPT'
+          - 'iptables -t nat -D POSTROUTING -o enX0 -j MASQUERADE'
+
+
+        # Les machines auront pour IP assignée
+        # le prefix d'ip fournis plus haut
+        # puis une ip machine égale à celle sur
+        # le réseau local.
+        machines:
+          - hostname: 'lockhart'
+            public_key: ''
+            ip: '11'
+          - hostname: 'tablet'
+            public_key: ''
+            ip: '12'
+          - hostname: 'op6'
+            public_key: ''
+            ip: '13'

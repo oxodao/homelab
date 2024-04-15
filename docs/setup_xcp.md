@@ -8,7 +8,16 @@ Rien de spécifique pour l'installation, télécharger l'iso [via le site offici
 
 ## Post-install
 
-Après l'installation, il faut préparer le iGPU à être utilisé en passthrough pour la VM qui proposera Jellyfin.
+Après l'installation, on va ajouter le terminfo pour `tmux-256color` sinon ça va être relou.
+```sh
+$ curl -LO https://invisible-island.net/datafiles/current/terminfo.src.gz && gunzip terminfo.src.gz
+$ tic -xe tmux-256color terminfo.src
+$ rm terminfo.src terminfo.src.gz
+```
+
+Déco-reco du ssh pour que ça prenne effet.
+
+Ensuite, il faut préparer le iGPU à être utilisé en passthrough pour la VM qui proposera Jellyfin.
 
 [Doc officielle](https://docs.xcp-ng.org/compute/#pci-passthrough)
 

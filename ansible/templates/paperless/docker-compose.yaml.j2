@@ -1,0 +1,26 @@
+services:
+  broker:
+    image: 'redis:7.0'
+    restart: 'unless-stopped'
+
+  app:
+    image: 'ghcr.io/paperless-ngx/paperless-ngx:latest'
+    restart: 'unless-stopped'
+    user: 1000:1000
+    environment:
+      USERMAP_UID: 1000
+      USERMAP_GID: 1000
+      PAPERLESS_REDIS: 'redis://broker:6379'
+      PAPERLESS_URL: 'https://paper.{{hostname}}'
+      PAPERLESS_TIME_ZONE: 'Europe/Paris'
+      PAPERLESS_OCR_LANGUAGE: 'fra'
+      PAPERLESS_CONSUMER_POLLING: 30
+    volumes:
+      - './data:/usr/src/paperless/data'
+      - './export:/usr/src/paperless/export'
+      - '/mnt/documents/{{'test/' if debug_in_vm is defined and debug_in_vm else ''}}medias:/usr/src/paperless/media'
+      - '/mnt/documents/{{'test/' if debug_in_vm is defined and debug_in_vm else ''}}ingress:/usr/src/paperless/consume'
+    depends_on:
+      - broker
+    ports:
+      - '127.0.0.1:8000:8000'

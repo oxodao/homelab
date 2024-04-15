@@ -56,9 +56,6 @@ Ensuite on setup le nginx, dans `/etc/nginx/sites-available/navidrome.conf`:
 server {
     listen      80;
     server_name m.public.lan;
-
-    # Using 307 ensure that the client will follow the redirection on POST requests
-    # Cf. https://softwareengineering.stackexchange.com/questions/99894/why-doesnt-http-have-post-redirect
     return 307 https://$server_name$request_uri;
 }
 
@@ -70,19 +67,7 @@ server {
 
     location / {
         proxy_pass http://localhost:4533;
-        proxy_http_version 1.1;
-        proxy_redirect off;
-        proxy_buffering off;
-        proxy_pass_request_headers on;
-
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-Protocol $scheme;
-        proxy_set_header X-Forwarded-Host $http_host;
+        include snippets/reverse_proxy.conf;
     }
 }
 ```

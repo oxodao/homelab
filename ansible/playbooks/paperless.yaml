@@ -1,0 +1,29 @@
+---
+- hosts: 'local'
+  become: no
+  tags: ['paperless']
+
+  tasks:
+    - name: 'Mount the shares shared folder'
+      include_tasks:
+        file: '../tasks/add_nas_mount.yaml'
+      vars:
+        mount_name: 'documents'
+
+    - name: 'Copying the docker-compose file'
+      include_tasks:
+        file: '../tasks/add_docker_app.yaml'
+      vars:
+        app_name: 'paperless'
+        app_port: '8000'
+        app_directories:
+          - data
+          - export
+
+    - name: 'Setting-up nginx for Paperless'
+      include_tasks:
+        file: '../tasks/add_nginx_app.yaml'
+      vars:
+        app_name: 'paperless'
+        app_port: '8000'
+        enabled: yes

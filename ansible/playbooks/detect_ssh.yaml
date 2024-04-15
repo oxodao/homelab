@@ -8,14 +8,6 @@
   gather_facts: no
 
   tasks:
-    - name: Print the gateway for each host when defined
-      ansible.builtin.debug:
-        msg: '{{machines}}' 
-    
-    - name: fail
-      fail:
-        msg: 'failed'
-
     - name: "Check if the custom port works"
       wait_for:
         host: "{{ ansible_host }}"

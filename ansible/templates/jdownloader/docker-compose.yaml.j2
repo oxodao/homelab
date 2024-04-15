@@ -1,0 +1,12 @@
+services:
+  app:
+    image: 'antlafarge/jdownloader:latest'
+    restart: 'unless-stopped'
+    user: 1000:1000
+    volumes:
+        - './config:/jdownloader/cfg'
+        - '/mnt/shares/downloads:/jdownloader/downloads'
+    environment:
+        JD_EMAIL: '{{ jdownloader_email }}'
+        JD_PASSWORD: '{{ jdownloader_password }}'
+        JD_DEVICENAME: 'homelab'

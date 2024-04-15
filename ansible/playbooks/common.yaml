@@ -154,3 +154,7 @@
       loop:
         - 'sudo'
         - 'docker'
+
+    - name: 'Weird thing to be sure the user has the docker group'
+      ansible.builtin.meta:
+        reset_connection

@@ -1,0 +1,21 @@
+[Interface]
+Address = {{wireguard.ip_prefix}}1/24
+ListenPort = {{wireguard.port}}
+PrivateKey = {{wireguard.private_key}}
+
+# iptables rules
+{% for rule in wireguard.post_up %}
+PostUp = {{rule}}
+{% endfor %}
+
+{% for rule in wireguard.post_down %}
+PostDown = {{rule}}
+{% endfor %}
+
+# Clients
+{% for machine in wireguard.machines %}
+[Peer] # {{machine.hostname}}
+PublicKey = {{machine.public_key}}
+AllowedIPs = {{wireguard.ip_prefix}}{{machine.ip}}/32
+
+{% endfor %}

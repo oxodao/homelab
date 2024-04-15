@@ -1,0 +1,22 @@
+---
+- hosts: 'local'
+  become: no
+  tags: ['grafana']
+
+  tasks:
+    - name: 'Copying the docker-compose file'
+      include_tasks:
+        file: '../tasks/add_docker_app.yaml'
+      vars:
+        app_name: 'grafana'
+        app_port: '8492'
+        app_directories:
+          - data
+
+    - name: 'Setting-up nginx for Grafana'
+      include_tasks:
+        file: '../tasks/add_nginx_app.yaml'
+      vars:
+        app_name: 'grafana'
+        app_port: '8492'
+        enabled: yes

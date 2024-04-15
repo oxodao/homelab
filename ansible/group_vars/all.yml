@@ -1,3 +1,5 @@
+debug_in_vm: false
+
 ntp_timezone: 'Europe/Paris'
 ssh_port: '57982'
 
@@ -15,12 +17,12 @@ lan_ip_prefix: "192.168.14."
 
 # https://www.opennic.org/
 forwarded_dns_servers:
-  - 51.158.108.203
-  - 152.53.15.127
-  - 195.10.195.195
+  - '2a00:f826:8:2::195'
+  - '2a03:4000:006b:0191:9825:1cff:fe34:0bbe'
+  - '51.158.108.203'
+  - '152.53.15.127'
 
 predefined_machines:
-  - { hostname: 'home', short_name: 'home', ip: '2', description: 'My local homelab VM' }
   - { hostname: 'severusdesk', short_name: 'severusdesk', ip: '10', description: 'Main desktop computer' }
   - { hostname: 'lockhart', short_name: 'lockhart', ip: '11', description: 'Main laptop (Huawei)' }
   - { hostname: 'tablet', short_name: 'tablet', ip: '12', description: 'Main tablet' }
