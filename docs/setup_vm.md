@@ -58,6 +58,4 @@ Même chose que pour la VM publique avec exception:
 - Hostname à rubeus-local
 - Pas de setup pour le iGPU
 
-**Attention**, pour HomeAssistant il faut aussi autoriser le passthrough de l'adaptateur zigbee, se référer à la partie [HomeAssistant](setup_ha.md) avant de lancer le ansible !
-
 [Page précédente](setup_xcp.md) / [Page suivante](setup_common.md)
