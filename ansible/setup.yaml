@@ -8,6 +8,7 @@
 - import_playbook: 'playbooks/paperless.yaml'
 - import_playbook: 'playbooks/gitea.yaml'
 - import_playbook: 'playbooks/immich.yaml'
+- import_playbook: 'playbooks/nextcloud.yaml'
 - import_playbook: 'playbooks/jdownloader.yaml'
 - import_playbook: 'playbooks/wireguard.yaml'
 - import_playbook: 'playbooks/homeassistant.yaml'

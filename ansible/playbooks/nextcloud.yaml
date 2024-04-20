@@ -1,0 +1,29 @@
+---
+- hosts: 'public'
+  become: no
+  tags: ['nextcloud']
+
+  tasks:
+    - name: 'Mount the shares shared folder'
+      include_tasks:
+        file: '../tasks/add_nas_mount.yaml'
+      vars:
+        mount_name: 'cloud'
+
+    - name: 'Copying the docker-compose file'
+      include_tasks:
+        file: '../tasks/add_docker_app.yaml'
+      vars:
+        app_name: 'nextcloud'
+        app_port: '8012'
+        app_directories:
+          - 'pg_data'
+          - 'nc_data'
+
+    - name: 'Setting-up nginx for Nextcloud'
+      include_tasks:
+        file: '../tasks/add_nginx_app.yaml'
+      vars:
+        app_name: 'nextcloud'
+        app_port: '8012'
+        enabled: yes

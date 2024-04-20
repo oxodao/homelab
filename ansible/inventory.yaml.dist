@@ -13,6 +13,7 @@ public:
       smtp_password: ''
       smtp_from: ''
       smtp_to: ''
+      smtp_domain: '' # e.g. "gmail.com"
 
       # Utilisé par Navidrome pour récupérer
       # les informations sur les artistes et les covers
@@ -24,6 +25,10 @@ public:
         shares:
           host: '//192.168.14.100/Shares'
           username: 'homelab_shares'
+          password: ''
+        cloud:
+          host: '//192.168.14.100/Cloud'
+          username: 'homelab_cloud'
           password: ''
 
       # Certificat SSL utilisé par nginx

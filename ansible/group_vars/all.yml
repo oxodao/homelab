@@ -28,6 +28,7 @@ predefined_machines:
   - { hostname: 'tablet', short_name: 'tablet', ip: '12', description: 'Main tablet' }
   - { hostname: 'op6', short_name: 'op6', ip: '13', description: 'Main phone' }
   - { hostname: 'switch', short_name: 'switch', ip: '14', description: 'Main Nintendo Switch' }
+  - { hostname: 'nas', short_name: 'nas', ip: '100', description: 'Synology NAS' }
 
 # Lets me append machines from the inventory
 # without having to add them all again

@@ -1,0 +1,56 @@
+# Help: https://github.com/docker-library/docs/blob/master/nextcloud/README.md
+
+services:
+  db:
+    image: 'postgres'
+    restart: 'unless-stopped'
+    volumes:
+      - './pg_data:/var/lib/postgresql/data'
+    environment:
+      POSTGRES_DB: 'nextcloud'
+      POSTGRES_USER: 'nextcloud'
+      POSTGRES_PASSWORD: 'nextcloud'
+      PGDATA: '/var/lib/postgresql/data/pgdata'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready']
+      interval: '10s'
+      timeout: '5s'
+      retries: 5
+
+  redis:
+    image: 'redis:7'
+    user: '1000:1000'
+    healthcheck:
+      test: [ 'CMD', 'redis-cli', '--raw', 'incr', 'ping' ]
+      interval: '10s'
+      timeout: '5s'
+      retries: 5
+
+  app:
+    image: 'nextcloud'
+    restart: 'unless-stopped'
+    ports:
+      - '127.0.0.1:8012:80'
+    volumes:
+      - './nc_data:/var/www/html'
+      - '/mnt/cloud:/data'
+    depends_on:
+      db:
+        condition: 'service_healthy'
+      redis:
+        condition: 'service_healthy'
+    environment:
+      POSTGRES_HOST: 'db'
+      POSTGRES_DB: 'nextcloud'
+      POSTGRES_USER: 'nextcloud'
+      POSTGRES_PASSWORD: 'nextcloud'
+      NEXTCLOUD_DATA_DIR: '/data'
+      REDIS_HOST: 'redis'
+      SMTP_HOST: '{{smtp_hostname}}'
+      SMTP_SECURE: 'tls' # @TODO: setup according to ansible vars
+      SMTP_PORT: '{{smtp_hostname}}'
+      SMTP_NAME: '{{smtp_username}}'
+      SMTP_PASSWORD: '{{smtp_password}}'
+      MAIL_FROM_ADDRESS: '{{smtp_from}}'
+      MAIL_DOMAIN: '{{smtp_domain}}'
+      PHP_UPLOAD_LIMIT: '8G'
