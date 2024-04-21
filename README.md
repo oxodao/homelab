@@ -12,7 +12,7 @@ Mon homelab est composé de trois machines:
 
 Le serveur est un host XCP-NG (hostname `rubeus`) avec deux VM principales, une dédiée aux services accessible en publique, l'autre avec les services accessible uniquement sur le réseau interne.
 
-Note: le serveur n'a pas de VM pour XenOrchestra, j'utilise sur mon PC une VM sur laquelle j'ai installé XOA via [XenOrchestraInstallerUpdater](https://github.com/ronivay/XenOrchestraInstallerUpdater), cela permet d'économiser de la RAM / du CPU utilisé pour autre chose.
+Note: le serveur n'a pas de VM pour XenOrchestra avant l'installation finale, j'utilise sur mon PC une VM sur laquelle j'ai installé XOA via [XenOrchestraInstallerUpdater](https://github.com/ronivay/XenOrchestraInstallerUpdater), cela permet d'économiser de la RAM / du CPU utilisé pour autre chose. Une fois le ansible passé, XO est installé dans un container accessible sur [la vm privée](https://xoa.home.lan/)
 
 Le NAS Synology possède toutes les data et expose plusieurs montage samba:
 - sauvegarde (Mon espace de stockage générique ou je met un peu tout)
