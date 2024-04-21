@@ -74,7 +74,7 @@ server {
 
 On fait le petit symlink qui va bien et on relance nginx:
 ```sh
-$ sudo ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/nginx.conf
+$ sudo ln -s /etc/nginx/sites-available/navidrome.conf /etc/nginx/sites-enabled/navidrome.conf
 $ sudo systemctl restart nginx
 ```
 
@@ -93,4 +93,4 @@ Créer le compte utilisateur.
 
 Le setup de Navidrome est terminé.
 
-[Page précédente](setup_jellyfin.md) / [Page suivante](setup_paperless.md)
+[Page précédente](setup_xoa.md) / [Page suivante](setup_paperless.md)

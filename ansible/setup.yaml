@@ -3,6 +3,7 @@
 - import_playbook: 'playbooks/common.yaml'
 - import_playbook: 'playbooks/dns.yaml'
 - import_playbook: 'playbooks/reverse_proxy.yaml'
+- import_playbook: 'playbooks/xoa.yaml'
 - import_playbook: 'playbooks/jellyfin.yaml'
 - import_playbook: 'playbooks/navidrome.yaml'
 - import_playbook: 'playbooks/paperless.yaml'

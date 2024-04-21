@@ -8,7 +8,7 @@
 
 ## Ajout du montage SMB
 
-Même setup que Jellyfin, et on utilise le même point de montage`.
+Même setup que Jellyfin, et on utilise le même point de montage.
 
 ## Setup de JDownloader
 

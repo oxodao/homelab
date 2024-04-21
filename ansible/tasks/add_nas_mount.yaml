@@ -3,9 +3,9 @@
   file:
     path: '/mnt/{{mount_name}}'
     state: 'directory'
-    mode: 0777
-    owner: '{{ansible_username}}'
-    group: '{{ansible_username}}'
+    mode: '{{ "0777" if mount_perms is not defined else mount_perms}}'
+    owner: '{{ansible_username if mount_user is not defined else mount_user}}'
+    group: '{{ansible_username if mount_group is not defined else mount_group}}'
 
 - name: 'Mount the mount (and add it to fstab)'
   become: yes
@@ -13,5 +13,5 @@
     fstype: 'cifs'
     src: '{{smb_mounts[mount_name]["host"]}}'
     path: '/mnt/{{mount_name}}'
-    opts: 'username={{smb_mounts[mount_name]["username"]}},password={{smb_mounts[mount_name]["password"]}},uid=1000,gid=1000'
+    opts: 'username={{smb_mounts[mount_name]["username"]}},password={{smb_mounts[mount_name]["password"]}},uid={{"1000" if mount_user is not defined else mount_user}},gid={{"1000" if mount_group is not defined else mount_group}},file_mode={{"0777" if mount_perms is not defined else mount_perms}},dir_mode={{"0777" if mount_perms is not defined else mount_perms}}'
     state: 'mounted'

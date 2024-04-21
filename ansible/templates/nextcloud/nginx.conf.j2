@@ -13,6 +13,14 @@ server {
     # Lets you upload large files
     client_max_body_size 8192M;
 
+    location /.well-known/carddav {
+        return 301 $scheme://$host/remote.php/dav;
+    }
+
+    location /.well-known/caldav {
+        return 301 $scheme://$host/remote.php/dav;
+    }
+
     location / {
         proxy_pass http://localhost:{{app_port}};
         include snippets/reverse_proxy.conf;

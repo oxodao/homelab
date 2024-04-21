@@ -9,6 +9,9 @@
         file: '../tasks/add_nas_mount.yaml'
       vars:
         mount_name: 'cloud'
+        mount_user: '33'
+        mount_group: '33'
+        mount_perms: '0770'
 
     - name: 'Copying the docker-compose file'
       include_tasks:
