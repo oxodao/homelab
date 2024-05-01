@@ -47,30 +47,32 @@ Ce guide note particulièrement le setup du serveur puisque le reste est basique
 -- Setup des apps --
 
 6. [Setup XenOrchestra](docs/setup_xoa.md)
-7. [Setup Jellyfin](docs/setup_jellyfin.md)
-8. [Setup Navidrome](docs/setup_navidrome.md)
-9. [Setup Paperless](docs/setup_paperless.md)
-10. [Setup Gitea](docs/setup_gitea.md)
-11. [Setup Immich](docs/setup_immich.md)
-12. [Setup JDownloader](docs/setup_jdownloader.md)
-13. [Setup HomeAssistant](docs/setup_ha.md)
-14. [Setup Grafana](docs/setup_grafana.md)
-15. [Setup Nextcloud](docs/setup_nextcloud.md)
+7. [Setup Apprise (Notifications)](docs/setup_apprise.md)
+8. [Setup Jellyfin](docs/setup_jellyfin.md)
+9. [Setup Navidrome](docs/setup_navidrome.md)
+10. [Setup Paperless](docs/setup_paperless.md)
+11. [Setup Gitea](docs/setup_gitea.md)
+12. [Setup Immich](docs/setup_immich.md)
+13. [Setup JDownloader](docs/setup_jdownloader.md)
+14. [Setup HomeAssistant](docs/setup_ha.md)
+15. [Setup Grafana](docs/setup_grafana.md)
+16. [Setup Nextcloud](docs/setup_nextcloud.md)
+17. [Setup Firefly III](docs/setup_firefly.md)
 
 -- Setup sécu --
 
-16. [Setup serveurs VPN](docs/setup_vpn.md)
-17. [Setup firewall](docs/setup_firewall.md)
-18. [Setup backups](docs/setup_backups.md)
+18. [Setup serveurs VPN](docs/setup_vpn.md)
+19. [Setup firewall](docs/setup_firewall.md)
+20. [Setup backups](docs/setup_backups.md)
 
 > A partir de ce point la, il s'agît d'informations sur
 > l'utilisation usuelle des VMs et du serveur ainsi que
 > comment faire du disaster recovery.
 
-19. [Ajouter un utilisateur sur le VPN](docs/add_user_vpn.md)
-20. [Renouveller les certificats SSL](docs/renew_ssl.md)
-21. [Restorer un backup](docs/disaster_recovery.md)
-22. [Backup day](docs/backup_day.md)
+21. [Ajouter un utilisateur sur le VPN](docs/add_user_vpn.md)
+22. [Renouveller les certificats SSL](docs/renew_ssl.md)
+23. [Restorer un backup](docs/disaster_recovery.md)
+24. [Backup day](docs/backup_day.md)
 
 ## Home Assistant
 

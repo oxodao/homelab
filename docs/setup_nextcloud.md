@@ -33,7 +33,7 @@ services:
       POSTGRES_PASSWORD: 'nextcloud'
       PGDATA: '/var/lib/postgresql/data/pgdata'
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready']
+      test: ['CMD-SHELL', 'pg_isready -U nextcloud']
       interval: '10s'
       timeout: '5s'
       retries: 5
@@ -138,4 +138,4 @@ Il faut aussi dire à Nextcloud qu'il peut utiliser le https:
 
 Vérifier et corriger les problèmes dans [la page des issues](https://cloud.public.lan/settings/admin/overview).
 
-[Page précédente](setup_xoa.md) / [Page suivante](setup_paperless.md)
+[Page précédente](setup_xoa.md) / [Page suivante](setup_firefly.md)

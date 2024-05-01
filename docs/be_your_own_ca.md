@@ -10,8 +10,10 @@ $ openssl genrsa -des3 -out oxo-ca.key 4096
 
 ### Root certificate
 ```
-$ openssl req -x509 -new -nodes -key oxo-ca.key -sha256 -days 1825 -out oxo-ca.pem
+$ openssl req -x509 -new -nodes -key oxo-ca.key -sha256 -days 398 -out oxo-ca.pem
 ```
+
+**Note**: Pour les iphone il faut obligatoirement que le CA ne fasse pas plus de 398 jours et que le SAN (Host Name) match le CN/FQDN. C.F. les [règles d'Apple](https://support.apple.com/en-us/102028), [autre lien](https://www.ismoothblog.com/2021/06/generate-trusted-root-certificates-with-openssl.html)
 
 ### Convert the root certificate to crt
 

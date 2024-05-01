@@ -1,0 +1,8 @@
+services:
+  app:
+    image: 'caronc/apprise'
+    restart: 'unless-stopped'
+    volumes:
+      - './config:/config'
+    ports:
+      - '127.0.0.1:{{app_port}}:8000'

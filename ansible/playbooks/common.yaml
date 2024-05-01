@@ -10,7 +10,7 @@
 
     - name: 'Installing some softwares'
       apt:
-        name: [ 'zip', 'unzip', 'fuse', 'zsh', 'rsync', 'sqlite3', 'iptables', 'vim', 'git', 'exa', 'direnv']
+        name: [ 'zip', 'unzip', 'fuse', 'zsh', 'rsync', 'sqlite3', 'iptables', 'vim', 'git', 'exa', 'direnv', 'atool']
 
     - name: 'Enabling fuse'
       modprobe:

@@ -1,0 +1,83 @@
+---
+- hosts: 'all'
+  tags: ['backups']
+
+  tasks:
+    # @TODO: setup restic à la main hors de apt
+    # Créer l'user restic et donner les permissions comme il faut
+    # pour pouvoir backup les dossiers docker root
+    # Configurer autorestic pour utiliser le nouveau binaire restic
+
+    - name: 'Installing some softwares'
+      become: yes
+      apt:
+        name: 'restic'
+
+    - name: 'Adding the restic user'
+      become: yes
+      user:
+        name: 'restic'
+        shell: '/sbin/nologin'
+        system: yes
+      
+    - name: 'Adding cap on restic bin'
+      become: yes
+      capabilities:
+        capability: 'cap_dac_read_search=+ep'
+        path: '/usr/sbin/restic'
+        state: 'present'
+
+    - name: 'Check if autorestic is installed'
+      stat:
+        path: '/usr/bin/autorestic'
+      register: 'autorestic_exists'
+
+    - name: 'Getting the autorestic url'
+      get_release_url:
+        repository: 'cupcakearmy/autorestic'
+      register: autorestic_url
+      when: not autorestic_exists.stat.exists
+
+    # Doesn't work for some reason
+    # - name: 'Download & extract autorestic'
+    #   unarchive:
+    #     src: '{{autorestic_url.meta}}'
+    #     dest: '/opt'
+    #     remote_src: yes
+
+    - name: 'Download autorestic'
+      get_url:
+        url: '{{autorestic_url.meta}}'
+        dest: '/opt/autorestic.bz2'
+      when: not autorestic_exists.stat.exists
+
+    - name: 'Extract autorestic'
+      command: 'aunpack -X autorestic autorestic.bz2'
+      args:
+        creates: '/opt/autorestic'
+        chdir: '/opt'
+      when: not autorestic_exists.stat.exists
+
+    - name: 'Remove the archive'
+      file:
+        path: '/opt/autorestic.bz2'
+        state: 'absent'
+      when: not autorestic_exists.stat.exists
+
+    - name: 'Making the file executable'
+      file:
+        path: '/opt/autorestic'
+        mode: '0755'
+      when: not autorestic_exists.stat.exists
+
+    - name: 'Adding the symlink'
+      file:
+        src: '/opt/autorestic'
+        dest: '/usr/bin/autorestic'
+        state: 'link'
+      when: not autorestic_exists.stat.exists
+
+    - name: 'Adding autorestic config'
+      template:
+        src: '../templates/autorestic.{{group_names[0]}}.yml.j2'
+        dest: '/home/{{ansible_username}}/.autorestic.yml'

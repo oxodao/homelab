@@ -20,6 +20,12 @@ public:
       spotify_client_id: ''
       spotify_client_secret: ''
 
+      # Restic settings
+      restic_path: 's3.<REGION>.backblazeb2.com/<BACKUP>'
+      restic_access_id: 'Access ID'
+      restic_secret_id: 'Secret ID'
+      restic_repository_password: 'Repository password'
+
       # Les montages SMB qui seront utilisés
       smb_mounts:
         shares:
@@ -84,6 +90,18 @@ local:
 
       jdownloader_email: ''
       jdownloader_password: ''
+
+      # Must be a random 32 chars string without '#'
+      firefly_app_secret: ''
+      firefly_cron_secret: ''
+      firefly_loc_latitude: ''
+      firefly_loc_longitude: ''
+
+      # Restic settings
+      restic_path: 's3.<REGION>.backblazeb2.com/<BACKUP>'
+      restic_access_id: 'Access ID'
+      restic_secret_id: 'Secret ID'
+      restic_repository_password: 'Repository password'
 
       # Utilisateurs ayant accès au MQTT de Home Assistant
       mqtt_users:

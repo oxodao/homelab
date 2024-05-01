@@ -1,0 +1,12 @@
+version: 2
+
+backends:
+  public_backblaze:
+    type: 's3'
+    path: '{{restic_path}}'
+    key: '{{restic_repository_password}}'
+    env:
+      AWS_ACCESS_KEY_ID: '{{restic_access_id}}'
+      AWS_SECRET_ACCESS_KEY: '{{restic_secret_id}}'
+
+locations: []

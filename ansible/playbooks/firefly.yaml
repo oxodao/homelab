@@ -1,0 +1,28 @@
+---
+- hosts: 'local'
+  become: no
+  tags: ['firefly']
+
+  tasks:
+    - name: 'Mount the documents shared folder'
+      include_tasks:
+        file: '../tasks/add_nas_mount.yaml'
+      vars:
+        mount_name: 'documents'
+
+    - name: 'Copying the docker-compose file'
+      include_tasks:
+        file: '../tasks/add_docker_app.yaml'
+      vars:
+        app_name: 'firefly'
+        app_port: '7385'
+        app_directories:
+          - 'pg_data'
+
+    - name: 'Setting-up nginx for Firefly III'
+      include_tasks:
+        file: '../tasks/add_nginx_app.yaml'
+      vars:
+        app_name: 'firefly'
+        app_port: '7385'
+        enabled: yes

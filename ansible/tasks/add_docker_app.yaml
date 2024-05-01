@@ -21,6 +21,8 @@
     src: '../templates/{{app_name}}/docker-compose.yaml.j2'
     dest: '/home/{{ansible_username}}/{{app_name}}/docker-compose.yaml'
 
+# @TODO: Cause des problèmes avec le postgres de firefly ???
+# Il s'attends à être en 999 je sais pas pq ça marche sur les autres
 - name: 'Creating required dirs'
   file:
     path: '/home/{{ansible_username}}/{{app_name}}/{{item}}'

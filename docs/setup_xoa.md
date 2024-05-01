@@ -96,4 +96,4 @@ Ensuite il faut ajouter son serveur, dans Settings > Servers il faut se connecte
 
 Attention, après avoir cliqué sur connect il faut bien valider l'utilisation du certificat SSL self-signed.
 
-[Page précédente](setup_reverseproxy.md) / [Page suivante](setup_jellyfin.md)
+[Page précédente](setup_reverseproxy.md) / [Page suivante](setup_apprise.md)

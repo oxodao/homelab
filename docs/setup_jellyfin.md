@@ -161,4 +161,4 @@ Pour vérifier que le transcoding marche, lancer un film dans un autre onglet pu
 
 Le setup de Jellyfin est terminé.
 
-[Page précédente](setup_reverseproxy.md) / [Page suivante](setup_navidrome.md)
+[Page précédente](setup_apprise.md) / [Page suivante](setup_navidrome.md)
