@@ -1,0 +1,30 @@
+version: '1'
+
+default:
+    repository: 's3:{{ restic_path }}'
+    password: '{{ restic_repository_password }}'
+
+    env:
+        AWS_ACCESS_KEY_ID: '{{ restic_access_id}}'
+        AWS_SECRET_ACCESS_KEY: '{{ restic_secret_id }}'
+
+    backup:
+        run-before:
+            - 'sn -l main_bot -m "Backing up $PROFILE_NAME..."'
+        run-after-fail:
+            - 'sn -l main_bot -m "Failed to backup $PROFILE_NAME: $ERROR_MESSAGE\n$ERROR_STDERR"'
+
+default_docker:
+    inherit: 'default'
+
+    backup:
+        run-before:
+            - 'sn -l main_bot -m "Backing up $PROFILE_NAME..."'
+            - 'cd ~{{ansible_username}}/$RESTIC_APP && docker compose down'
+
+        run-after:
+            - 'sn -l main_bot -m "$PROFILE_NAME backed up!"'
+
+        run-finally:
+            - 'cd ~{{ansible_username}}/$RESTIC_APP && docker compose up -d'
+

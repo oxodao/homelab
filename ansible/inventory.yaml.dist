@@ -26,6 +26,9 @@ public:
       restic_secret_id: 'Secret ID'
       restic_repository_password: 'Repository password'
 
+      # SimpleNotifier Webhook url
+      simple_notifier_hook: 'https://discord.com/api/webhooks/xxxxxxxxxx/xxxxxxxxxxxxx'
+
       # Les montages SMB qui seront utilisés
       smb_mounts:
         shares:
@@ -102,6 +105,9 @@ local:
       restic_access_id: 'Access ID'
       restic_secret_id: 'Secret ID'
       restic_repository_password: 'Repository password'
+
+      # SimpleNotifier Webhook url
+      simple_notifier_hook: 'https://discord.com/api/webhooks/xxxxxxxxxx/xxxxxxxxxxxxx'
 
       # Utilisateurs ayant accès au MQTT de Home Assistant
       mqtt_users:

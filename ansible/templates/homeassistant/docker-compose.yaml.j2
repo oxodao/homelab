@@ -43,7 +43,9 @@ services:
     volumes:
       - './nodered_data:/data'
     ports:
-      - '127.0.0.1:1880:1880'
+      # Should not be put on 127.0.0.1 because of grafana
+      # @TODO: Use docker networks
+      - '1880:1880'
 
   # zigbee2mqtt:
     # image: 'koenkk/zigbee2mqtt:1.36.1'

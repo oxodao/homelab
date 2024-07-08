@@ -1,6 +1,6 @@
 # Backups
 
-Pour faire les backups, on va utiliser autorestic.
+Pour faire les backups, on va utiliser resticprofile.
 
 Restaurer une app nécessite de restaurer le tag standard ET le tag `_data` datant du MÊME BACKUP.
 

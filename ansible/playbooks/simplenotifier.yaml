@@ -1,0 +1,36 @@
+---
+- hosts: 'local'
+  become: no
+  tags: ['simplenotifier']
+
+  tasks:
+    - name: 'Check if simplenotifier is installed'
+      stat:
+        path: '/usr/bin/sn'
+      register: 'simplenotifier_exists'
+
+    - name: 'Get SimpleNotifier release URL'
+      get_release_url:
+        repository: 'oxodao/simple-notifier'
+      register: simplenotifier_url
+      when: not simplenotifier_exists.stat.exists
+
+    - name: 'Download SimpleNotifier'
+      get_url:
+        url: '{{simplenotifier_url.meta}}'
+        dest: '/usr/bin/sn'
+      become: yes
+      when: not simplenotifier_exists.stat.exists
+
+    - name: 'Making the file executable'
+      file:
+        path: '/usr/bin/sn'
+        mode: '0755'
+      become: yes
+      when: not simplenotifier_exists.stat.exists
+
+    - name: 'Adding SimpleNotifier config'
+      become: yes
+      template:
+        src: '../templates/simple_notifier.yaml.j2'
+        dest: '/etc/simple_notifier.yaml'

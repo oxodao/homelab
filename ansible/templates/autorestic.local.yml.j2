@@ -10,61 +10,6 @@ backends:
       AWS_SECRET_ACCESS_KEY: '{{restic_secret_id}}'
 
 locations:
-  #region Apprise
-  apprise:
-    from: '/home/oxodao/apprise'
-    to: ['local_backblaze']
-    options:
-      backup:
-        tag: ['apprise']
-    hooks:
-      before:
-        - 'curl -k -X POST -F "body=Backing up Apprise" -F "tags=all" https://notif.home.lan/notify/apprise'
-        - 'cd /home/oxodao/apprise && docker compose down'
-      after:
-        - 'cd /home/oxodao/apprise && docker compose up -d'
-      success:
-        - 'curl -k -X POST -F "body=Apprise backed up" -F "tags=all" https://notif.home.lan/notify/apprise'
-      failure:
-        - 'curl -k -X POST -F "body=Apprise failed to be backed up" -F "tags=all" https://notif.home.lan/notify/apprise'
-  #endregion
-
-  #region Gitea
-  gitea:
-    from: '/home/oxodao/gitea'
-    to: ['local_backblaze']
-    options:
-      backup:
-        tag: ['gitea']
-    hooks:
-      before:
-        - 'curl -k -X POST -F "body=Backing up Gitea" -F "tags=all" https://notif.home.lan/notify/apprise'
-        - 'cd /home/oxodao/gitea && docker compose down'
-      after:
-        - 'cd /home/oxodao/gitea && docker compose up -d'
-      success:
-        - 'curl -k -X POST -F "body=Gitea backed up" -F "tags=all" https://notif.home.lan/notify/apprise'
-      failure:
-        - 'curl -k -X POST -F "body=Gitea failed to be backed up" -F "tags=all" https://notif.home.lan/notify/apprise'
-
-  gitea_data:
-    from: '/mnt/git'
-    to: ['local_backblaze']
-    options:
-      backup:
-        tag: ['gitea_data']
-    hooks:
-      before:
-        - 'curl -k -X POST -F "body=Backing up Gitea data" -F "tags=all" https://notif.home.lan/notify/apprise'
-        - 'cd /home/oxodao/gitea && docker compose down'
-      after:
-        - 'cd /home/oxodao/gitea && docker compose up -d'
-      success:
-        - 'curl -k -X POST -F "body=Gitea data backed up" -F "tags=all" https://notif.home.lan/notify/apprise'
-      failure:
-        - 'curl -k -X POST -F "body=Gitea data failed to be backed up" -F "tags=all" https://notif.home.lan/notify/apprise'
-  #endregion
-
   #region Firefly
   firefly:
     from: '/home/oxodao/firefly'
@@ -120,25 +65,6 @@ locations:
         - 'curl -k -X POST -F "body=Grafana failed to be backed up" -F "tags=all" https://notif.home.lan/notify/apprise'
   #endregion
 
-  #region HomeAssistant
-  homeassistant:
-    from: '/home/oxodao/homeassistant'
-    to: ['local_backblaze']
-    options:
-      backup:
-        tag: ['homeassistant']
-    hooks:
-      before:
-        - 'curl -k -X POST -F "body=Backing up HomeAssistant" -F "tags=all" https://notif.home.lan/notify/apprise'
-        - 'cd /home/oxodao/homeassistant && docker compose down'
-      after:
-        - 'cd /home/oxodao/homeassistant && docker compose up -d'
-      success:
-        - 'curl -k -X POST -F "body=HomeAssistant backed up" -F "tags=all" https://notif.home.lan/notify/apprise'
-      failure:
-        - 'curl -k -X POST -F "body=HomeAssistant failed to be backed up" -F "tags=all" https://notif.home.lan/notify/apprise'
-  #endregion
-
   #region Immich
   immich:
     from: '/home/oxodao/immich'
@@ -176,40 +102,4 @@ locations:
         - 'curl -k -X POST -F "body=Immich data backed up" -F "tags=all" https://notif.home.lan/notify/apprise'
       failure:
         - 'curl -k -X POST -F "body=Immich data failed to be backed up" -F "tags=all" https://notif.home.lan/notify/apprise'
-  #endregion
-
-  #region Paperless
-  paperless:
-    from: '/home/oxodao/paperless'
-    to: ['local_backblaze']
-    options:
-      backup:
-        tag: ['paperless']
-    hooks:
-      before:
-        - 'curl -k -X POST -F "body=Backing up Paperless" -F "tags=all" https://notif.home.lan/notify/apprise'
-        - 'cd /home/oxodao/paperless && docker compose down'
-      after:
-        - 'cd /home/oxodao/paperless && docker compose up -d'
-      success:
-        - 'curl -k -X POST -F "body=Paperless backed up" -F "tags=all" https://notif.home.lan/notify/apprise'
-      failure:
-        - 'curl -k -X POST -F "body=Paperless failed to be backed up" -F "tags=all" https://notif.home.lan/notify/apprise'
-
-  paperless_data:
-    from: '/mnt/documents/medias'
-    to: ['local_backblaze']
-    options:
-      backup:
-        tag: ['paperless_data']
-    hooks:
-      before:
-        - 'curl -k -X POST -F "body=Backing up Paperless data" -F "tags=all" https://notif.home.lan/notify/apprise'
-        - 'cd /home/oxodao/paperless && docker compose down'
-      after:
-        - 'cd /home/oxodao/paperless && docker compose up -d'
-      success:
-        - 'curl -k -X POST -F "body=Paperless data backed up" -F "tags=all" https://notif.home.lan/notify/apprise'
-      failure:
-        - 'curl -k -X POST -F "body=Paperless data failed to be backed up" -F "tags=all" https://notif.home.lan/notify/apprise'
   #endregion

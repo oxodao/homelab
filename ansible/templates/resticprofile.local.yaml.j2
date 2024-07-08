@@ -1,0 +1,139 @@
+version: '1'
+
+groups:
+  full:
+    - 'gitea'
+    - 'gitea_docs'
+    - 'homeassistant'
+    - 'immich'
+    - 'immich_docs'
+    - 'paperless'
+    - 'paperless_docs'
+    - 'grafana'
+
+default:
+    repository: 's3:{{ restic_path }}'
+    password-file: '/root/restic_password.txt'
+
+    env:
+        AWS_ACCESS_KEY_ID: '{{ restic_access_id}}'
+        AWS_SECRET_ACCESS_KEY: '{{ restic_secret_id }}'
+
+    backup:
+        run-before:
+            - 'sn -l main_bot -m "Backing up $PROFILE_NAME..."'
+            - 'cd ~{{ansible_username}}/$RESTIC_APP && docker compose down'
+        run-after:
+            - 'sn -l main_bot -m "$PROFILE_NAME backed up!"'
+        run-after-fail:
+            - 'sn -l main_bot -m "Failed to backup $PROFILE_NAME: $ERROR_MESSAGE\n$ERROR_STDERR"'
+        run-finally:
+            - 'cd ~{{ansible_username}}/$RESTIC_APP && docker compose up -d'
+
+
+#region Gitea
+gitea:
+    inherit: 'default'
+    lock: '/tmp/resticprofile_gitea.lock'
+
+    run-before:
+        - 'echo "RESTIC_APP=gitea" > "{{ "{{env}}" }}"'
+
+    backup:
+        source: ['/home/{{ ansible_username }}/gitea']
+        tag: ['gitea']
+
+gitea_docs:
+    inherit: 'default'
+    lock: '/tmp/resticprofile_gitea.lock'
+
+    run-before:
+        - 'echo "RESTIC_APP=gitea" > "{{ "{{env}}" }}"'
+
+    backup:
+        source: ['/mnt/git']
+        tag: ['gitea_docs']
+#endregion
+
+#region Home Assistant
+homeassistant:
+    inherit: 'default'
+    lock: '/tmp/resticprofile_homeassistant.lock'
+
+    run-before:
+        - 'echo "RESTIC_APP=homeassistant" > "{{ "{{env}}" }}"'
+
+    backup:
+        source: ['/home/{{ ansible_username }}/homeassistant']
+        tag: ['homeassistant']
+#endregion
+
+#region Paperless
+paperless:
+    inherit: 'default'
+    lock: '/tmp/resticprofile_paperless.lock'
+
+    run-before:
+        - 'echo "RESTIC_APP=paperless" > "{{ "{{env}}" }}"'
+
+    backup:
+        source: ['/home/{{ ansible_username }}/paperless']
+        tag: ['paperless']
+        exclude:
+          - 'data/log/'
+          - 'export/'
+
+paperless_docs:
+    inherit: 'default'
+    lock: '/tmp/resticprofile_paperless.lock'
+
+    run-before:
+        - 'echo "RESTIC_APP=paperless" > "{{ "{{env}}" }}"'
+
+    backup:
+        source: ['/mnt/documents']
+        tag: ['paperless_docs']
+    exclude:
+        - 'firefly/'
+        - 'ingress/'
+#endregion
+
+#region Grafana
+grafana:
+    inherit: 'default'
+    lock: '/tmp/resticprofile_grafana.lock'
+
+    run-before:
+        - 'echo "RESTIC_APP=grafana" > "{{ "{{env}}" }}"'
+
+    backup:
+        source: ['/home/{{ ansible_username }}/grafana']
+        tag: ['grafana']
+#endregion
+
+#region Immich
+immich:
+    inherit: 'default'
+    lock: '/tmp/resticprofile_immich.lock'
+
+    run-before:
+        - 'echo "RESTIC_APP=immich" > "{{ "{{env}}" }}"'
+
+    backup:
+        source: ['/home/{{ ansible_username }}/immich']
+        tag: ['immich']
+
+immich_docs:
+    inherit: 'default'
+    lock: '/tmp/resticprofile_immich.lock'
+
+    run-before:
+        - 'echo "RESTIC_APP=immich" > "{{ "{{env}}" }}"'
+
+    backup:
+        source: ['/mnt/documents']
+        tag: ['immich_docs']
+    exclude:
+        - 'encoded-video/'
+        - 'thumbs/'
+#endregion

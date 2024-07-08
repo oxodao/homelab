@@ -6,9 +6,10 @@ import platform
 
 # -linux-xxxx-default.tar.gz = spotifyd
 # _linux_xxxx.bz2  = autorestic
+# _linux_xxxx.tar.gz = resticprofile
 CUSTOM_ARCH_NAMES = {
-    'x86_64': ['amd64', '-linux-default.tar.gz', '_linux_amd64.bz2'],
-    'aarch64': ['arm64', '-linux-armhf-default.tar.gz', '_linux_arm64.bz2'],
+    'x86_64': ['amd64', '-linux-default.tar.gz', '_linux_amd64.bz2', '_linux_amd64.tar.gz'],
+    'aarch64': ['arm64', '-linux-armhf-default.tar.gz', '_linux_arm64.bz2', '_linux_arm64.tar.gz'],
 }
 
 def main():
