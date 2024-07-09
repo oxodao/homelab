@@ -147,6 +147,12 @@ Se connecter après le setup puis aller dans les paramètres d'administrations.
 
 Optionnellement, créer les autres comptes utilisateurs nécessaires (Tant qu'on a pas d'AD)
 
+Il faut ensuite configurer les dossiers correctement:
+
+Dans l'onglet "Général", mettre `/cache` comme chemin de cache et `/metadata` comme chemin de metadata. Dans l'onglet "Lecture", mettre `/transcodes` comme "Emplacement du transcodeur".
+
+Cela permet d'avoir ces dossiers temporaires hors de la config et simplifier le backup&restore.
+
 Aller dans l'onglet "Lecture" pour configurer le hardware transcoding:
 - Accélération matérielle: "Video Acceleration API (VAAPI)"
 - Appareil VA-API: "/dev/dri/renderD128"

@@ -1,30 +1,68 @@
 version: '1'
 
+groups:
+  full:
+    - 'jellyfin'
+    - 'navidrome'
+
 default:
     repository: 's3:{{ restic_path }}'
-    password: '{{ restic_repository_password }}'
+    password-file: '/root/restic_password.txt'
 
     env:
-        AWS_ACCESS_KEY_ID: '{{ restic_access_id}}'
+        AWS_ACCESS_KEY_ID: '{{ restic_access_id }}'
         AWS_SECRET_ACCESS_KEY: '{{ restic_secret_id }}'
 
     backup:
         run-before:
             - 'sn -l main_bot -m "Backing up $PROFILE_NAME..."'
-        run-after-fail:
-            - 'sn -l main_bot -m "Failed to backup $PROFILE_NAME: $ERROR_MESSAGE\n$ERROR_STDERR"'
-
-default_docker:
-    inherit: 'default'
-
-    backup:
-        run-before:
-            - 'sn -l main_bot -m "Backing up $PROFILE_NAME..."'
             - 'cd ~{{ansible_username}}/$RESTIC_APP && docker compose down'
-
         run-after:
             - 'sn -l main_bot -m "$PROFILE_NAME backed up!"'
-
+        run-after-fail:
+            - 'sn -l main_bot -m "Failed to backup $PROFILE_NAME: $ERROR_MESSAGE\n$ERROR_STDERR"'
         run-finally:
             - 'cd ~{{ansible_username}}/$RESTIC_APP && docker compose up -d'
 
+#region Jellyfin
+jellyfin:
+    inherit: 'default'
+    lock: '/tmp/resticprofile_jellyfin.lock'
+
+    run-before:
+        - 'echo "RESTIC_APP=jellyfin" > "{{ "{{env}}" }}"'
+
+    backup:
+        source: ['/home/{{ ansible_username }}/jellyfin']
+        tag: ['jellyfin']
+        exclude:
+            - 'transcodes/'
+            - 'cache/'
+            - 'metadata/'
+            - 'config/log/'
+            # Those should not be there but just in case
+            # Jellyfin was misconfigured
+            - 'config/cache/'
+            - 'config/metadata/'
+            - 'config/transcodes/'
+#endregion
+
+#region Navidrome
+# @TODO: Backup on a remote thing but not
+# on S3 as it will be quite heavy
+navidrome:
+    inherit: 'default'
+    lock: '/tmp/resticprofile_navidrome.lock'
+
+    run-before:
+        - 'echo "RESTIC_APP=navidrome" > "{{ "{{env}}" }}"'
+
+    backup:
+        source: ['/home/{{ ansible_username }}/navidrome']
+        tag: ['navidrome']
+        exclude:
+            - 'cache/'
+#endregion
+
+# @TODO: Nextcloud
+# https://docs.nextcloud.com/server/latest/admin_manual/maintenance/backup.html
