@@ -83,4 +83,22 @@
         src: '../templates/resticprofile.{{group_names[0]}}.yaml.j2'
         dest: '/etc/resticprofile/profiles.yaml'
 
-    # @TODO: set crontab
+    - name: 'Adding the crontab'
+      cron:
+        name: 'backup_job'
+        job: 'resticprofile --name "full" backup'
+        minute: 0
+        weekday: 1
+        hour: 0
+      when: ansible_hostname == 'rubeus-local' # @TODO find a way to do it with group name instead of hostname
+
+    # The second VM is backed-up one hour after the first one
+    # So that the discord messages are not mixed together
+    - name: 'Adding the crontab'
+      cron:
+        name: 'backup_job'
+        job: 'resticprofile --name "full" backup'
+        weekday: 1
+        hour: 1
+        minute: 0
+      when: ansible_hostname == 'rubeus-public'

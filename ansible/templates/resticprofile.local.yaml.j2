@@ -93,9 +93,9 @@ paperless_docs:
     backup:
         source: ['/mnt/documents']
         tag: ['paperless_docs']
-    exclude:
-        - 'firefly/'
-        - 'ingress/'
+        exclude:
+            - 'firefly/'
+            - 'ingress/'
 #endregion
 
 #region Grafana
@@ -131,9 +131,9 @@ immich_docs:
         - 'echo "RESTIC_APP=immich" > "{{ "{{env}}" }}"'
 
     backup:
-        source: ['/mnt/documents']
+        source: ['/mnt/images']
         tag: ['immich_docs']
-    exclude:
-        - 'encoded-video/'
-        - 'thumbs/'
+        exclude:
+            - 'encoded-video/'
+            - 'thumbs/'
 #endregion
