@@ -106,7 +106,7 @@ Attention aux DNS, si c'est pas encore configuré dans la freebox on n'y aura pa
 192.168.14.59 nr.home.lan
 ```
 
-## Installation de zigbee2mqtt
+## Installation de zigbee2mqtt (USB)
 
 Le passthrough USB est à chier sur XCP-NG, la solution un peu recipe for disaster que j'ai trouvé et qui à l'air de marcher est de setup zigbee2mqtt sur dom0 puisque le dongle est automatiquement attaché sur dom0.
 
@@ -171,6 +171,17 @@ Host dom0
         User root
         LocalForward 8080 localhost:8080
 ```
+
+## Installation de zigbee2mqtt (network)
+
+Maintenant que j'ai acheté la passerelle zigbee de Lidl, je peux ajouter z2m directement dans ma VM sans soucis de passthrough puisque tout passe par le réseau.
+
+@TODO: Expliquer comment jailbreak la passerelle (https://paulbanks.org/projects/lidl-zigbee/ha/)
+
+@TODO: Expliquer le setup de base dans docker de z2m
+
+@TODO: Expliquer la config spécifique pour z2m sur le réseau
+
 
 ## Post-setup HomeAssistant
 

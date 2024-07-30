@@ -72,3 +72,22 @@ server {
         include snippets/reverse_proxy.conf;
     }
 }
+
+# Frigate
+server {
+    listen      80;
+    server_name nvr.{{hostname}};
+    return 307 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name nvr.{{hostname}};
+
+    include snippets/ssl.conf;
+
+    location / {
+        proxy_pass http://localhost:5000;
+        include snippets/reverse_proxy.conf;
+    }
+}

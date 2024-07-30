@@ -47,12 +47,26 @@ services:
       # @TODO: Use docker networks
       - '1880:1880'
 
-  # zigbee2mqtt:
-    # image: 'koenkk/zigbee2mqtt:1.36.1'
-    # restart: 'unless-stopped'
-    # environment:
-      # TZ: 'Europe/Paris'
-    # ports:
-      # - '127.0.0.1:8129:8080'
-    # devices:
-      # - '/dev/serial/by-id/usb-Texas_Instruments_TI_CC2531_USB_CDC___0X00124B001CD49787-if00:/dev/ttyACM0'
+   frigate:
+    image: 'ghcr.io/blakeblackshear/frigate:stable'
+    restart: 'unless-stopped'
+    volumes:
+      - './frigate_config:/config'
+      - '/mnt/nvr:/media/frigate'
+      - type: 'tmpfs'
+        target: '/tmp/cache'
+        tmpfs:
+          size: 1000000000
+    ports:
+      - '127.0.0.1:5000:5000'
+      - '8554:8554' # RTSP feeds
+
+  zigbee2mqtt:
+    image: 'koenkk/zigbee2mqtt:1.36.1'
+    restart: 'unless-stopped'
+    network_mode: 'host'
+    volumes:
+      - './zigbee2mqtt_data:/app/data'
+      - '/run/udev:/run/udev:ro'
+    environment:
+      TZ: 'Europe/Paris'
