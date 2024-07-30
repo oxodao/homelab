@@ -14,7 +14,12 @@
       short_name: "{{hostvars['rubeus-local']['domain']}}"
       ip: "{{hostvars['rubeus-local']['ansible_host'].split('.')[-1]}}"
       description: 'My local homelab VM'
-    current_machines: "{{ [ homelab, homelab_local ] + machines }}"
+    minecraft:
+      hostname: 'mc'
+      short_name: 'mc'
+      ip: "{{hostvars['rubeus-mc']['ansible_host'].split('.')[-1]}}"
+      description: 'My minecraft server'
+    current_machines: "{{ [ homelab, homelab_local, minecraft ] + machines }}"
 
   tasks:
     - name: 'Install dnsmasq'
