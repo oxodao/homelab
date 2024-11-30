@@ -10,6 +10,7 @@ groups:
     - 'paperless'
     - 'paperless_docs'
     - 'grafana'
+    - 'manyfold'
 
 default:
     repository: 's3:{{ restic_path }}'
@@ -136,4 +137,17 @@ immich_docs:
         exclude:
             - 'encoded-video/'
             - 'thumbs/'
+#endregion
+
+#region Manyfold
+manyfold:
+    inherit: 'default'
+    lock: '/tmp/resticprofile_manyfold.lock'
+
+    run-before:
+        - 'echo "RESTIC_APP=manyfold" > "{{ "{{env}}" }}"'
+
+    backup:
+        source: ['/home/{{ ansible_username }}/manyfold']
+        tag: ['manyfold']
 #endregion

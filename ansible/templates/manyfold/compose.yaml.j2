@@ -1,0 +1,58 @@
+services:
+  app:
+    image: 'ghcr.io/manyfold3d/manyfold:latest'
+    restart: 'unless-stopped'
+    environment:
+      DATABASE_ADAPTER: 'postgresql'
+      DATABASE_HOST: 'database'
+      DATABASE_PORT: 5432
+      DATABASE_NAME: 'manyfold'
+      DATABASE_USER: 'manyfold'
+      DATABASE_PASSWORD: 'manyfold'
+      SECRET_KEY_BASE: 'jklSQFHzeh_8482ç2çjFVnbq123i&_FF_f23;www'
+      REDIS_URL: 'redis://valkey:6379/1'
+      PUID: 1000
+      PGID: 1000
+    depends_on:
+      database:
+        condition: 'service_healthy'
+      valkey:
+        condition: 'service_healthy'
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - 'ALL'
+    cap_add:
+      - 'CHOWN'
+      - 'DAC_OVERRIDE'
+      - 'SETUID'
+      - 'SETGID'
+    volumes:
+      - './data:/libraries'
+    ports:
+      - '127.0.0.1:{{app_port}}:3214'
+
+  database:
+    image: 'postgres:16-alpine'
+    restart: 'unless-stopped'
+    environment:
+      POSTGRES_DB: 'manyfold'
+      POSTGRES_PASSWORD: 'manyfold'
+      POSTGRES_USER: 'manyfold'
+      PGDATA: '/var/lib/postgresql/data/pgdata'
+    volumes:
+      - './db_data:/var/lib/postgresql/data'
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "manyfold", "-U", "manyfold"]
+      timeout: '5s'
+      start_period: '60s'
+      retries: 5
+
+  valkey:
+    image: 'valkey/valkey:8.0.1-bookworm'
+    restart: 'unless-stopped'
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      timeout: '5s'
+      start_period: '60s'
+      retries: 5

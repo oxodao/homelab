@@ -8,13 +8,6 @@ public:
       # Cela donnera domain.tld pour les noms de domaines
       domain: 'public'
 
-      # Utilisé pour le monitoring des diverses app
-      smtp_username: ''
-      smtp_password: ''
-      smtp_from: ''
-      smtp_to: ''
-      smtp_domain: '' # e.g. "gmail.com"
-
       # Utilisé par Navidrome pour récupérer
       # les informations sur les artistes et les covers
       spotify_client_id: ''
@@ -85,20 +78,11 @@ local:
       # Cela donnera domain.tld pour les noms de domaines
       domain: 'home'
 
-      # Utilisé pour le monitoring des diverses app
-      smtp_username: ''
-      smtp_password: ''
-      smtp_from: ''
-      smtp_to: ''
-
       jdownloader_email: ''
       jdownloader_password: ''
 
-      # Must be a random 32 chars string without '#'
-      firefly_app_secret: ''
-      firefly_cron_secret: ''
-      firefly_loc_latitude: ''
-      firefly_loc_longitude: ''
+      # Manyfold settings
+      manyfold_secret: '' # Some large string
 
       # Restic settings
       restic_path: 's3.<REGION>.backblazeb2.com/<BACKUP>'

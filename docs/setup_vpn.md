@@ -103,4 +103,4 @@ Il faut peut-être dans certains cas charger le module du kernel:
 $ sudo modprobe wireguard
 ```
 
-[Page précédente](setup_firefly.md) / [Page suivante](setup_firewall.md)
+[Page précédente](setup_grafana.md) / [Page suivante](setup_firewall.md)

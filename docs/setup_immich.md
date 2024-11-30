@@ -159,4 +159,4 @@ Aller sur l'interafce Web et créer son compte Admin.
 
 Immich est prêt à usage.
 
-[Page précédente](setup_gitea.md) / [Page suivante](setup_jdownloader.md)
+[Page précédente](setup_gitea.md) / [Page suivante](setup_manyfold.md)

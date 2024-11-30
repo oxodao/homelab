@@ -190,3 +190,5 @@ $  AWS_ACCESS_KEY_ID='KEY_ID' AWS_SECRET_ACCESS_KEY='KEY_SECRET' restic -r s3:s3
 > Car on a nos credentials dedans
 
 Le restore se fait dans le dossier actuel du coup (`.`). On supprime les fichiers sur le serveur puis on les remplace par ceux restaurés.
+
+[Page précédente](setup_firewall.md) / [Page suivante](setup_add_user_vpn.md)
