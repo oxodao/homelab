@@ -93,3 +93,9 @@ Chose que je vais potentiellement ajouter après que tout soit fonctionnel
     - [Paperless](https://github.com/paperless-ngx/paperless-ngx/pull/100): Ils ont pas l'air de vouloir ni ldap ni oauth
     - [Navidrome](https://github.com/navidrome/navidrome/pull/590): huuuh ça à pas l'air très fun non plus
     - JDownloader: Accès externe donc via LEUR login, à voir pour dev un client self-hosted mais API non documentée
+
+## TODO
+
+Choses que j'ai fait mais pas encore dans le ansible / documenté (pas bien!)
+
+- Migration vers forgejo (+ runner-ish)
