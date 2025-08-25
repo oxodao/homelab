@@ -12,6 +12,8 @@ Mon homelab est composé de trois machines:
 
 Le serveur est un host XCP-NG (hostname `rubeus`) avec deux VM principales, une dédiée aux services accessible en publique, l'autre avec les services accessible uniquement sur le réseau interne.
 
+Il existe une troisième VM (`vps`) qui est une VPS exposé à l'extérieur de façon controllée, seules certaines appli (ex: Koel, Serveur Minecraft, ...) sont sur cette VM. Elle n'est pas accessible DIRECTEMENT depuis l'extérieur, mais uniquement via un VPN qui la connecte à un VPS loué chez PulseHeberg qui lui s'occupe de faire reverse-proxy vers cette VM (Sans exposer mon IP et sans exposer de ports directement de chez moi).
+
 Note: le serveur n'a pas de VM pour XenOrchestra avant l'installation finale, j'utilise sur mon PC une VM sur laquelle j'ai installé XOA via [XenOrchestraInstallerUpdater](https://github.com/ronivay/XenOrchestraInstallerUpdater), cela permet d'économiser de la RAM / du CPU utilisé pour autre chose. Une fois le ansible passé, XO est installé dans un container accessible sur [la vm privée](https://xoa.home.lan/)
 
 Le NAS Synology possède toutes les data et expose plusieurs montage samba:
@@ -57,21 +59,22 @@ Ce guide note particulièrement le setup du serveur puisque le reste est basique
 14. [Setup JDownloader](docs/setup_jdownloader.md)
 15. [Setup HomeAssistant](docs/setup_ha.md)
 16. [Setup Grafana](docs/setup_grafana.md)
+17. [Setup Koel](docs/setup_koel.md)
 
 -- Setup sécu --
 
-17. [Setup serveurs VPN](docs/setup_vpn.md)
-18. [Setup firewall](docs/setup_firewall.md)
-19. [Setup backups](docs/setup_backups.md)
+18. [Setup serveurs VPN](docs/setup_vpn.md)
+19. [Setup firewall](docs/setup_firewall.md)
+20. [Setup backups](docs/setup_backups.md)
 
 > A partir de ce point la, il s'agît d'informations sur
 > l'utilisation usuelle des VMs et du serveur ainsi que
 > comment faire du disaster recovery.
 
-20. [Ajouter un utilisateur sur le VPN](docs/add_user_vpn.md)
-21. [Renouveller les certificats SSL](docs/renew_ssl.md)
-22. [Restorer un backup](docs/disaster_recovery.md)
-23. [Backup day](docs/backup_day.md)
+21. [Ajouter un utilisateur sur le VPN](docs/add_user_vpn.md)
+22. [Renouveller les certificats SSL](docs/renew_ssl.md)
+23. [Restorer un backup](docs/disaster_recovery.md)
+24. [Backup day](docs/backup_day.md)
 
 ## Home Assistant
 

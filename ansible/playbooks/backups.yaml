@@ -1,5 +1,5 @@
 ---
-- hosts: ['local', 'public']
+- hosts: ['local', 'public'] # @TODO: Add vps once everything is ready
   tags: ['backups']
 
   # @TODO

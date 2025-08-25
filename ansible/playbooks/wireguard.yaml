@@ -1,5 +1,5 @@
 ---
-- hosts: ['public', 'local']
+- hosts: ['public', 'local', 'vps']
   tags: ['wireguard']
   become: yes
 

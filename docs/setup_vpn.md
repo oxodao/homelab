@@ -2,9 +2,10 @@
 
 J'utilise Wireguard comme serveur VPN.
 
-Deux VPNs sont créés:
+Trois VPNs sont créés:
 - Un VPN pour moi uniquement me permettant d'accéder à tout le réseau local
 - Un VPN pour ma famille permettant d'accéder à la machine `rubeus-public`
+- Un VPN "bridge vps" qui permet à un serveur loué à l'extérieur de proxy les applications présentes sur la VM `vps`.
 
 Il faut donc faire le setup sur les deux machines puisqu'un firewall bloque l'accès au réseau local à la machine `rubeus-public` qui n'a alors accès qu'au NAS.
 
@@ -68,7 +69,7 @@ PostDown = iptables -D FORWARD -o %i -j ACCEPT
 PostDown = iptables -t nat -D POSTROUTING -o enp2s0f0 -j MASQUERADE
 ```
 
-Pour le serveur public il faut utiliser les lignes suivantes:
+Pour le serveur public et le serveur VPS il faut utiliser les lignes suivantes:
 ```
 # On refuse le transit des packets en provenance de l'interface wg0 à destination de tout autre interface
 PostUp = iptables -A FORWARD -i %i -j DROP
@@ -103,4 +104,4 @@ Il faut peut-être dans certains cas charger le module du kernel:
 $ sudo modprobe wireguard
 ```
 
-[Page précédente](setup_grafana.md) / [Page suivante](setup_firewall.md)
+[Page précédente](setup_koel.md) / [Page suivante](setup_firewall.md)

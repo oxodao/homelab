@@ -15,4 +15,5 @@
 - import_playbook: 'playbooks/wireguard.yaml'
 - import_playbook: 'playbooks/homeassistant.yaml'
 - import_playbook: 'playbooks/grafana.yaml'
+- import_playbook: 'playbooks/koel.yaml'
 - import_playbook: 'playbooks/backups.yaml'

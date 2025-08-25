@@ -85,4 +85,4 @@ Puis dans Connection > Data sources on va ajouter InfluxDB:
 
 >>> ça marche pas @TODO !!
 
-[Page précédente](setup_ha.md) / [Page suivante](setup_vpn.md)
+[Page précédente](setup_ha.md) / [Page suivante](setup_koel.md)

@@ -16,11 +16,6 @@ Valider
 
 Via XOA nous créons donc une VM `Public VM` avec 2 vCPU, 2Go de ram (A voir à l'usage si c'est suffisant) et 60Go de stockage (Overkill mais j'ai de la place).
 
-Avant de lancer la VM, nous allons ajouter le passthrough pour le iGPU, sur l'host xcp-ng:
-```sh
-$ xe vm-param-set other-config:pci=0/0000:<ID iGPU (ex: 00:02.0)> uuid=<ID DE LA VM>
-```
-
 Effectuer une install de debian standard avec comme hostname `rubeus-public`, server name `public.lan`. Déselectionner l'environnement de bureau pour ne garder que "serveur SSH" et "Utilitaires usuels du système". Un user/password puis on installe le Management Agent de xcp-ng.
 
 ### Autoriser l'utilisateur à sudo
@@ -56,6 +51,11 @@ Même chose que pour la VM publique avec exception:
 - 12Go de ram
 - 120Go de stockage
 - Hostname à rubeus-local
-- Pas de setup pour le iGPU
+
+## Création de la VM vps
+
+Même chose que pour la VM publique avec:
+- 16Go de ram (Serveur Minecraft)
+- Hostname à vps
 
 [Page précédente](setup_xcp.md) / [Page suivante](setup_common.md)
